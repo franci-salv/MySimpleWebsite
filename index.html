@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Francesco Salvatore</title>
+  <link rel="icon" type="image/png" href="favicon.png">
+  <script>
+  function copyEmail() {
+    const email = "francisalv@icloud.com"; // <-- put your email here
+    navigator.clipboard.writeText(email).then(() => {
+      const btn = event.target;
+      const originalText = btn.textContent;
+      btn.textContent = "Copied!";
+      setTimeout(() => {
+        btn.textContent = originalText;
+      }, 2000); // reset after 2 sec
+    });
+  }
+</script>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #0d1b2a; /* dark blue */
+      color: #e0e1dd;
+      line-height: 1.6;
+    }
+    header {
+      background: #1b263b;
+      padding: 2rem;
+      text-align: center;
+    }
+    header h1 {
+      margin: 0;
+      font-size: 2rem;
+      color: #e0e1dd;
+    }
+    header p {
+      font-size: 1.2rem;
+      color: #778da9;
+    }
+    nav {
+      background: #415a77;
+      padding: 1rem;
+      text-align: center;
+    }
+    nav a {
+  margin: 0 1rem;
+  color: #e0e1dd;
+  text-decoration: none;
+  font-weight: bold;
+  transition: color 0.3s, text-shadow 0.3s;
+}
+
+    nav a:hover {
+  color: #f4d35e; /* golden highlight */
+  text-shadow: 0 0 10px #f4d35e;
+}
+
+    section {
+      max-width: 1000px;
+      margin: 2rem auto;
+      padding: 0 1rem;
+    }
+    footer {
+      background: #1b263b;
+      text-align: center;
+      padding: 1rem;
+      font-size: 0.9rem;
+      color: #778da9;
+    }
+
+.button-group {
+  display: flex;
+  justify-content: center;
+  gap: 1rem; /* space between buttons */
+  margin-top: 1rem;
+  flex-wrap: wrap; /* makes them stack nicely on mobile */
+}
+
+.btn {
+  display: inline-block;
+  background: #415a77;
+  color: #e0e1dd;
+  padding: 0.6rem 1.2rem;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: background 0.3s, transform 0.2s, box-shadow 0.3s;
+}
+
+@media (max-width: 900px) {
+  .card-container {
+    grid-template-columns: repeat(2, 1fr); /* 2 columns on tablets */
+  }
+}
+
+@media (max-width: 600px) {
+  .card-container {
+    grid-template-columns: 1fr; /* 1 column on phones */
+  }
+}
+
+
+.btn:hover {
+  background: #f4d35e;
+  color: #0d1b2a;
+  transform: scale(1.05);
+  box-shadow: 0 0 15px #f4d35e;
+}
+
+.card-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.card {
+  background: #1b263b;
+  border-radius: 12px;
+  padding: 1rem;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+  transition: transform 0.3s, box-shadow 0.3s;
+  text-align: center;
+}
+
+.card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 8px 20px rgba(244,211,94,0.6);
+}
+
+.card img {
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+}
+
+.card h3 {
+  margin: 0.5rem 0;
+  color: #f4d35e;
+}
+
+.card p {
+  font-size: 0.95rem;
+  color: #e0e1dd;
+  margin-bottom: 1rem;
+}
+
+ .timeline-container {
+      display: flex;
+      gap: 1rem;
+      overflow-x: auto;
+      padding: 1rem;
+      scroll-snap-type: x mandatory;
+    }
+
+    .timeline-card {
+      flex: 0 0 auto;
+      width: 250px;
+      background: #1b263b;
+      border-radius: 1rem;
+      padding: 1rem;
+      scroll-snap-align: center;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .timeline-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 8px 16px #ffb703;
+    }
+
+    /* optional: hide ugly scrollbar in Chrome/Safari */
+    .timeline-container::-webkit-scrollbar {
+      display: none;
+    }
+    .timeline-container {
+      -ms-overflow-style: none; /* IE */
+      scrollbar-width: none; /* Firefox */
+    }
+
+
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Francesco Salvatore</h1>
+    <p>Robotics · Automation · Engineering</p>
+  </header>
+
+  <nav>
+    <a href="#about">About</a>
+    <a href="#projects">Projects</a>
+    <a href="#previously">Previously</a>
+    <a href="#contact">Contact</a>
+  </nav>
+
+<section id="about">
+  <h2>About Me</h2>
+  <img src="me.jpg" alt="Francesco Salvatore" style="width:200px; border-radius:50%; float:left; margin-right:20px;">
+  <p>I’m a self taught full-stack developer and Mechanical Engineering student at TU/e in Eindhoven, with a strong focus on robotics, automation, and industrial systems. Over the past year I’ve built end-to-end projects ranging from PLC-based diagnostics tools in a factory setting, to web-integrated puzzle delivery systems for real users. Beyond engineering, currently training for my first marathon additionally I love to travel, hike and build things with smart people.
+  </p>
+</section>
+
+<section id="projects" style="clear: both; margin-top: 40px;">
+<section id="projects">
+  <h2>Projects</h2>
+  <div class="card-container">
+
+    <div class="card">
+      <img src="diagnosticPics.jpeg" alt="Pringles Factory Diagnostics Tool">
+      <h3>Factory Diagnostics Tool</h3>
+      <p>Developed a IP and TCP package diagnostics tool for Device Level Ring (DLR) circuits at the Pringles factory, integrating Rockwell Studio 5000 with FactoryTalk HMI screens.</p>
+      <a href="Implementation_of_a_Network_Diagnostic_Toolkit_for_Pringles (1) (3).pdf" target="_blank" class="btn">View Project</a>
+    </div>
+
+    <div class="card">
+      <img src="whatsapp.jpg" alt="WhatsApp Puzzle System">
+      <h3>WhatsApp Puzzle Delivery</h3>
+      <p>Built an automated daily puzzle subscription service using React, Firebase, Stripe, and WhatsApp API, that will be delivering quizzes to real users.</p>
+    </div>
+
+    <div class="card">
+      <img src="heatReactor.png" alt="MATLAB Heat Simulation">
+      <h3>Heat Storage Simulation</h3>
+      <p>Simulated a heat storage and transfer system in MATLAB/Simulink, modeling control loops and energy dynamics</p>
+      <a href="https://github.com/yourusername/project3" target="_blank" class="btn">View Project</a>
+    </div>
+    <div class="card">
+      <img src="ICSecurity.jpg" alt="ICS security">
+      <h3>ICS Cybersecurity Report </h3>
+      <p>Applied Purdue & Zero Trust models to analyze factory cybersecurity, with practical insights from building traffic diagnostics during my Pringles internship.</p>
+      <a href="CyberSecurity_ICS (2).pdf" target="_blank" class="btn">View Project</a>
+    </div>
+    <div class="card">
+      <img src="Cycling tool.png" alt="Cycling tool">
+      <h3>Weather Cycling tool </h3>
+      <p>Connected weather API with cycling suitability algorithm. To check cycling conditions city to city</p>
+      <a href="https://franci-salv.github.io/frontEndCycling/" target="_blank" class="btn">View Project</a>
+    </div>
+    <div class="card">
+      <img src="Visual-Recognition-AI.jpg" alt="AI image">
+      <h3>AI image recognition</h3>
+      <p>Built my own AI image recognition model from the ground up making my ReLu activation, convolution layer, max pooling etc.</p>
+    </div>
+
+  </div>
+  <section id="projects" style="clear: both; margin-top: 40px;">
+<div class="buttons" style="text-align: center;">
+  <a href="https://drive.google.com/drive/folders/1Zwzm03u6CIWJyrZAe9PSzoY2q7IDPpTO?usp=sharing" 
+     target="_blank" class="btn">All projects</a>
+</div>
+
+</section>
+
+<section id="previously" class="bg-gray-50 py-16">
+  <h2 class="text-3xl font-bold text-center mb-10">Previously</h2>
+  
+  <!-- Timeline Container -->
+ <div class="timeline-container">
+
+    <div class="timeline-card">
+      <h3>12/10/2025 – Eindhoven 🇳🇱</h3>
+      <p>Running my first marathon</p>
+    </div>
+
+    <div class="timeline-card">
+      <h3>07/09/2025 – Eindhoven 🇳🇱</h3>
+      <p>Joined Tech United robotics club in TU/e</p>
+    </div>
+
+    <div class="timeline-card">
+      <h3>02/07-31/07 2025 – Mechelen 🇧🇪</h3>
+      <p>Internship at Pringles Factory (E&I), building diagnostics tools & PLC simulations.</p>
+    </div>
+    <div class="timeline-card">
+      <h3>01/09/2024 – Eindhoven 🇳🇱</h3>
+      <p>Mechanical Engineering student at TU/e, diving into robotics & automation.</p>
+    </div>
+    
+    <div class="timeline-card">
+      <h3>2024 – Dublin 🇮🇪</h3>
+      <p>Graduated Sutton Park School with a 625/625 receiving the certificate of excellence for highest grade in DCG (Design communication graphics) </p>
+    </div>
+
+    <div class="timeline-card">
+      <h3>2023 – Dublin 🇮🇪</h3>
+      <p>Started training with U20 irish national volleyball team</p>
+    </div>
+
+    <div class="timeline-card">
+      <h3>2020 – Dublin 🇮🇪</h3>
+      <p>Moved to Dublin started Sutton Park School and met some cool builders <a href="https://willcarkner.com/">Will</a> and <a href="https://thomasforbes.com/">Thomas</a> </p>
+    </div>
+
+  <div class="timeline-card">
+      <h3>2010 – Mol 🇧🇪</h3>
+      <p>Enrolled in the European School of Mol in Belgium</p>
+    </div>
+
+    <div class="timeline-card">
+      <h3>31/05/2006 – Lier 🇧🇪</h3>
+      <p>A beautiful baby was born (me)</p>
+    </div>
+    
+  </div>
+</section>
+
+  <section id="contact">
+  <h2>Contact</h2>
+  <div class="button-group">
+      <button  class="btn" onclick="copyEmail()">Copy Email</button>
+    <a href="https://github.com/franci-salv" target="_blank" class="btn">GitHub</a>
+    <a href="https://www.linkedin.com/in/francesco-salvatore-982288239/" target="_blank" class="btn">LinkedIn</a>
+    <a href="Copy of Resume (automation oriented).pdf" class="btn" download>Download CV</a>
+
+  </div>
+</section>
+
+  <footer>
+    <p>&copy; Francesco Salvatore</p>
+  </footer>
+
+</body>
+</html>
