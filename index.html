@@ -17,6 +17,10 @@
       }, 2000); // reset after 2 sec
     });
   }
+
+  
+
+
 </script>
   <style>
     body {
@@ -182,6 +186,72 @@
       scrollbar-width: none; /* Firefox */
     }
 
+    .service-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.service-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  background: #1b263b;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.service-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(244,211,94,0.6);
+}
+
+.service-icon {
+  font-size: 2rem;
+  flex-shrink: 0;
+  color: #f4d35e;
+}
+
+@media (max-width: 700px) {
+  .service-card {
+    flex-direction: column;
+    text-align: center;
+    align-items: center;
+  }
+}
+
+.toggle-skillset {
+  margin-top: 0.8rem;
+  background: none;
+  border: none;
+  color: #f4d35e;
+  font-weight: bold;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.toggle-skillset:hover {
+  color: #e0e1dd;
+}
+
+.skillset {
+  list-style: none;
+  margin: 0.8rem 0 0;
+  padding-left: 1.2rem;
+  text-align: left;
+  display: none;
+  color: #e0e1dd;
+}
+
+.skillset li {
+  margin-bottom: 0.4rem;
+  font-size: 0.9rem;
+}
+
+
 
   </style>
 </head>
@@ -196,6 +266,7 @@
     <a href="#about">About</a>
     <a href="#projects">Projects</a>
     <a href="#previously">Previously</a>
+    <a href="#services">Services</a>
     <a href="#contact">Contact</a>
   </nav>
 
@@ -257,6 +328,9 @@
 
 </section>
 
+
+
+
 <section id="previously" class="bg-gray-50 py-16">
   <h2 class="text-3xl font-bold text-center mb-10">Previously</h2>
   
@@ -315,6 +389,85 @@
   </div>
 </section>
 
+
+<section id="services" style="margin-top: 60px;">
+  <h2>Products & Services</h2>
+  <p style="text-align:center; color:#778da9;">
+    Here’s how I can help your business, projects or you right now.
+  </p>
+
+  <div class="service-container">
+
+    <div class="service-card">
+      <div class="service-icon">🛠️</div>
+      <div>
+        <h3>CAD Design & Engineering</h3>
+          <p>I turn sketches into buildable solutions, whether that’s a house extension, a studio layout, or a precision assembly. Using SolidWorks, Siemens NX, and Simcenter, I create reliable models and simulations, and can ship physical prototypes with my Bambu A1 3D printer.</p>
+        <button  class="btn" onclick="copyEmail()">Copy Email</button>
+        <button class="toggle-skillset">My Skillset</button>
+    <ul class="skillset">
+      <li>SolidWorks, SiemensNX, Fusion 360, Onshape, Sketchup</li>
+      <li>Technical drawings, Assemblies & Design for manufacturability</li>
+      <li>3D printing prep & prototyping (Bambu A1)</li>
+      <li>kinematics Simulation & tolerance analysis </li>
+    </ul>
+      </div>
+    </div>
+
+    <div class="service-card">
+      <div class="service-icon">💻</div>
+      <div>
+        <h3>Full-Stack Development</h3>
+          <p>From AI image recognition to IoT-focused study tools, I build fast and reliable applications across web, embedded, and automation projects. I’ve delivered solutions with React, Astro, Node.js, Python, WhatsApp API, and custom integrations for real-world use cases like cycling weather checks and DFT signal processing.</p>
+        <button  class="btn" onclick="copyEmail()">Copy Email</button>
+        <button class="toggle-skillset">My Skillset</button>
+    <ul class="skillset">
+      <li>React, Astro, Next.js</li>
+      <li>Javascript, Python, Matlab (+Simulink) ,C++ , HTML, CSS</li>
+      <li>Node.js, Flask, Firebase, FastAPI</li>
+      <li>Stripe API, authentication systems, Twilio, Webhooks</li>
+      <li> Render, GitHub CI/CD</li>
+    </ul>
+      </div>
+    </div>
+
+    <div class="service-card">
+      <div class="service-icon">⚡</div>
+      <div>
+        <h3>Industrial PLC Automation, HMI & SCADA</h3>
+          <p>Hands-on experience in factory automation, from building a diagnostics IP toolkit at Pringles to simulating PLC logic with LogixPro. I specialize in secure PLC programming (ladder logic & structured text), RDC integration, and IoT-ready HMI systems that map complex IP paths into clear, actionable insights.</p>
+        <button  class="btn" onclick="copyEmail()">Copy Email</button>
+        <button class="toggle-skillset">My Skillset</button>
+        <ul class="skillset">
+      <li>Rockwell/Allen-Bradley (studio 5000 logix designer, asset center, RSlogix 500)</li>
+      <li>CODESYS, FactoryTalk View SE/ME, HMI/SCADA, DLR, Ethernet/IP, ControlNet</li>
+      <li>Ladder logic, structured text & Function block diagram, AOIs</li>
+      <li>Device integration (VFDs, Modbus, OPC UA), LogixPro, Factory I/O</li>
+    </ul>
+      </div>
+    </div>
+
+    <div class="service-card">
+      <div class="service-icon">🎓</div>
+      <div>
+        <h3>Tutoring</h3>
+        <p>Tutoring (Maths, Applied Maths, DCG, Italian/Dutch Oral). I help students understand faster, score higher, and feel confident. Proof: 625/625 in the Irish Leaving Cert + national DCG award, sessions are online </p>
+        <button  class="btn" onclick="copyEmail()">Copy Email</button>
+        <button class="toggle-skillset">My Skillset</button>
+        <ul class="skillset">
+  <li>Subjects: Maths, Applied Maths, DCG, Computer Science, Italian Oral, Dutch Oral</li>
+  <li>Exam prep: timed practice, past papers, structured notes</li>
+  <li>Methods: step-by-step explanations, oral fluency drills, visual learning aids</li>
+  <li>Formats: online (Zoom/Teams) or in-person (Eindhoven)</li>
+  <li>Credibility: 625/625 Leaving Cert, 7 H1s, national DCG award</li>
+</ul>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
   <section id="contact">
   <h2>Contact</h2>
   <div class="button-group">
@@ -322,6 +475,8 @@
     <a href="https://github.com/franci-salv" target="_blank" class="btn">GitHub</a>
     <a href="https://www.linkedin.com/in/francesco-salvatore-982288239/" target="_blank" class="btn">LinkedIn</a>
     <a href="Copy of Resume (automation oriented).pdf" class="btn" download>Download CV</a>
+    <a href="https://ko-fi.com/francescosalvatore" target="_blank" class="btn">💖 Support My Work</a>
+
 
   </div>
 </section>
@@ -330,5 +485,16 @@
     <p>&copy; Francesco Salvatore</p>
   </footer>
 
+
+  <script>
+  document.querySelectorAll(".toggle-skillset").forEach(button => {
+    button.addEventListener("click", () => {
+      const skillset = button.nextElementSibling;
+      const isVisible = skillset.style.display === "block";
+      skillset.style.display = isVisible ? "none" : "block";
+      button.textContent = isVisible ? "My Skillset" : "Hide Skillset";
+    });
+  });
+</script>
 </body>
 </html>
