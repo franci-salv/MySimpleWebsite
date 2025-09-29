@@ -252,6 +252,48 @@
 }
 
 
+/* --- Skillset as cards --- */
+.skillset-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 0.8rem;
+  margin-top: 1rem;
+  display: none;            /* stays hidden until toggled */
+}
+
+.skill-card {
+  background: #415a77;
+  padding: 0.6rem 0.8rem;
+  border-radius: 8px;
+  text-align: center;
+  font-size: 0.9rem;
+  color: #e0e1dd;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+  transition: background 0.3s, transform 0.3s, box-shadow 0.3s;
+  cursor: default;
+}
+
+.skill-card:hover {
+  background: #f4d35e;
+  color: #0d1b2a;
+  transform: translateY(-5px);
+  box-shadow: 0 6px 15px rgba(244,211,94,0.5);
+}
+
+/* Responsive behavior */
+@media (max-width: 900px) {
+  .skillset-grid {
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  }
+}
+@media (max-width: 600px) {
+  .skillset-grid {
+    grid-template-columns: 1fr 1fr;   /* 2 per row on phones */
+  }
+}
+
+
+
 
   </style>
 </head>
@@ -407,12 +449,22 @@
           <p>I turn sketches into buildable solutions, whether that’s a house extension, a studio layout, or a precision assembly. Using SolidWorks, Siemens NX, and Simcenter, I create reliable models and simulations, and can ship physical prototypes with my Bambu A1 3D printer.</p>
         <button  class="btn" onclick="copyEmail()">Copy Email</button>
         <button class="toggle-skillset">My Skillset</button>
-    <ul class="skillset">
-      <li>SolidWorks, SiemensNX, Fusion 360, Onshape, Sketchup</li>
-      <li>Technical drawings, Assemblies & Design for manufacturability</li>
-      <li>3D printing prep & prototyping (Bambu A1)</li>
-      <li>kinematics Simulation & tolerance analysis </li>
-    </ul>
+
+            <div class="skillset-grid">
+      <div class="skill-card">SolidWorks</div>
+      <div class="skill-card">Siemens NX</div>
+      <div class="skill-card">Fusion 360</div>
+      <div class="skill-card">Onshape</div>
+      <div class="skill-card">SketchUp</div>
+      <div class="skill-card">Tech drawings & Assemblies</div>
+      <div class="skill-card">Design for Manufacturability</div>
+      <div class="skill-card">3D Printing<br> (Bambu A1)</div>
+      <div class="skill-card">Kinematics & Tolerance Analysis</div>
+    </div>
+
+
+
+
       </div>
     </div>
 
@@ -423,13 +475,23 @@
           <p>From AI image recognition to IoT-focused study tools, I build fast and reliable applications across web, embedded, and automation projects. I’ve delivered solutions with React, Astro, Node.js, Python, WhatsApp API, and custom integrations for real-world use cases like cycling weather checks and DFT signal processing.</p>
         <button  class="btn" onclick="copyEmail()">Copy Email</button>
         <button class="toggle-skillset">My Skillset</button>
-    <ul class="skillset">
-      <li>React, Astro, Next.js</li>
-      <li>Javascript, Python, Matlab (+Simulink) ,C++ , HTML, CSS</li>
-      <li>Git, Node.js, Flask, Firebase, FastAPI</li>
-      <li>Stripe API, authentication systems, Twilio, Webhooks</li>
-      <li> Render, GitHub CI/CD</li>
-    </ul>
+
+        <div class="skillset-grid">
+      <div class="skill-card">React, Next.js, Astro</div>
+
+      <div class="skill-card">JavaScript, HTML, CSS</div>
+      <div class="skill-card">Python <br> C++, ROS</div>
+      <div class="skill-card">Matlab(+simulink)</div>
+
+      <div class="skill-card">Git, Node.js </div>
+      <div class="skill-card">Firebase</div>
+
+      <div class="skill-card">Stripe API, Twilio,  <br> Webhoooks</div>
+
+      <div class="skill-card">Render</div>
+      <div class="skill-card">Vercel</div>
+      <div class="skill-card">GitHub CI/CD</div>
+    </div>
       </div>
     </div>
 
@@ -440,13 +502,56 @@
           <p>Hands-on experience in factory automation, from building a diagnostics IP toolkit at Pringles to simulating PLC logic with LogixPro. I specialize in secure PLC programming (ladder logic & structured text), RDC integration, and IoT-ready HMI systems that map complex IP paths into clear, actionable insights.</p>
         <button  class="btn" onclick="copyEmail()">Copy Email</button>
         <button class="toggle-skillset">My Skillset</button>
-        <ul class="skillset">
-      <li>Rockwell/Allen-Bradley (studio 5000 logix designer, asset center, RSlogix 500)</li>
-      <li>CODESYS, FactoryTalk View SE/ME, HMI/SCADA, DLR, Ethernet/IP, ControlNet</li>
-      <li>Ladder logic, structured text & Function block diagram, AOIs</li>
-      <li>Device integration (VFDs, Modbus, OPC UA), LogixPro, Factory I/O</li>
-    </ul>
+
+            <div class="skillset-grid">
+      <div class="skill-card">
+        Rockwell / Allen-Bradley
       </div>
+      <div class="skill-card">
+        Studio 5000 Logix Designer
+      </div>
+      <div class="skill-card">
+        CODESYS
+      </div>
+      <div class="skill-card">
+        FactoryTalk View SE / ME
+      </div>
+      <div class="skill-card">
+        HMI / SCADA
+      </div>
+      <div class="skill-card">
+        DLR
+      </div>
+      <div class="skill-card">
+        Ethernet /IP
+      </div>
+      <div class="skill-card">
+        ControlNet
+      </div>
+      <div class="skill-card">
+        Ladder Logic
+      </div>
+      <div class="skill-card">
+        Structured Text
+      </div>
+      <div class="skill-card">
+        Function Block Diagram
+      </div>
+      <div class="skill-card">
+        AOIs
+      </div>
+      <div class="skill-card">
+        Device Integration<br>(VFDs, Modbus=
+      </div>
+      <div class="skill-card">
+        LogixPro
+      </div>
+      <div class="skill-card">
+        Factory I/O
+      </div>
+
+      </div>
+    </div>
     </div>
 
     <div class="service-card">
@@ -456,13 +561,23 @@
         <p>Tutoring (Maths, Applied Maths, DCG, Italian/Dutch Oral). I help students understand faster, score higher, and feel confident. Proof: 625/625 in the Irish Leaving Cert + national DCG award, sessions are online </p>
         <button  class="btn" onclick="copyEmail()">Copy Email</button>
         <button class="toggle-skillset">My Skillset</button>
-        <ul class="skillset">
-  <li>Subjects: Maths, Applied Maths, DCG, Computer Science, Italian Oral, Dutch Oral</li>
-  <li>Exam prep: timed practice, past papers, structured notes</li>
-  <li>Methods: step-by-step explanations, oral fluency drills, visual learning aids</li>
-  <li>Formats: online (Zoom/Teams) or in-person (Eindhoven)</li>
-  <li>Credibility: 625/625 Leaving Cert, 7 H1s, national DCG award</li>
-</ul>
+        <div class="skillset-grid">
+      <div class="skill-card">
+        Subjects:<br>Maths, Applied Maths, DCG, Computer Science,<br>Italian Oral, Dutch Oral
+      </div>
+      <div class="skill-card">
+        Exam Prep:<br>Timed practice, past papers,<br>Structured notes
+      </div>
+      <div class="skill-card">
+        Methods:<br>Step-by-step explanations,<br>Oral fluency drills,<br>Visual learning aids
+      </div>
+      <div class="skill-card">
+        Formats:<br>Online (Zoom / Teams) or<br>In-person (Eindhoven)
+      </div>
+      <div class="skill-card">
+        Credibility:<br>625/625 Leaving Cert,<br>7 H1s, National DCG Award
+      </div>
+    </div>
       </div>
     </div>
 
@@ -489,14 +604,20 @@
 
 
   <script>
-  document.querySelectorAll(".toggle-skillset").forEach(button => {
-    button.addEventListener("click", () => {
-      const skillset = button.nextElementSibling;
-      const isVisible = skillset.style.display === "block";
-      skillset.style.display = isVisible ? "none" : "block";
-      button.textContent = isVisible ? "My Skillset" : "Hide Skillset";
+
+  // Toggle skill grid visibility
+  document.querySelectorAll('.toggle-skillset').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const grid = btn.nextElementSibling;
+      grid.style.display = grid.style.display === 'grid' ? 'none' : 'grid';
     });
   });
+
+  function copyEmail() {
+    navigator.clipboard.writeText("your@email.com");
+    alert("Email copied!");
+  }
+
 </script>
 </body>
 </html>
