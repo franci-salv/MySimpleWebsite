@@ -650,6 +650,104 @@
 }
 
 
+/* --- Photos Section (Masonry Layout, Mixed Sizes, Lazy-load Ready) --- */
+.photo-gallery {
+  column-count: 3;                     /* auto wraps into vertical columns */
+  column-gap: var(--space-6);
+  margin-top: var(--space-8);
+  width: 100%;
+}
+
+.photo-gallery img {
+  width: 100%;
+  height: auto;                        /* keep natural aspect ratio */
+  margin-bottom: var(--space-6);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  cursor: pointer;
+  border: 1px solid rgba(59, 130, 246, 0.2);
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+  break-inside: avoid;                 /* prevents weird breaks between columns */
+  page-break-inside: avoid;
+  loading: lazy;
+}
+
+.photo-gallery img:hover {
+  transform: scale(1.03);
+  box-shadow: var(--shadow-xl);
+  border-color: var(--primary);
+}
+
+/* Optional: manual sizing control if you want standout wide/top-row shots */
+.photo-gallery img.wide {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+}
+
+.photo-gallery img.square {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+}
+
+.photo-gallery img.tall {
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+}
+
+/* Lightbox Overlay */
+.lightbox {
+  display: none;
+  position: fixed;
+  z-index: 999;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.9);
+  backdrop-filter: blur(4px);
+  overflow: auto;
+  padding-top: 60px;
+}
+
+.lightbox-content {
+  margin: auto;
+  display: block;
+  max-width: 80%;
+  max-height: 80%;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+}
+
+.close {
+  position: absolute;
+  top: 20px;
+  right: 35px;
+  color: var(--fg);
+  font-size: 2rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.close:hover {
+  color: var(--accent);
+}
+
+/* Responsive behavior */
+@media (max-width: 1024px) {
+  .photo-gallery { column-count: 2; }
+}
+
+@media (max-width: 640px) {
+  .photo-gallery { column-count: 1; }
+  .photo-gallery img {
+    margin-bottom: var(--space-4);
+  }
+}
+
+
+
 
 
   </style>
@@ -666,6 +764,7 @@
     <a href="#projects">Projects</a>
     <a href="#previously">Previously</a>
     <a href="#services">Services</a>
+    <a href="#photos">Photos</a>
     <a href="#contact">Contact</a>
   </nav>
 
@@ -746,7 +845,7 @@
 
     <div class="timeline-card">
       <h3>12/10/2025 – Eindhoven 🇳🇱</h3>
-      <p>Running my first marathon</p>
+      <p>Running my first marathon, final placement #3759 final time of 4:31:20. I am incredibly proud of the journey I've embarked on. While training I was fundraising for The Ocean Cleanup.  <a target="_blank" href="https://fund.theoceancleanup.com/fundraisers/francescosalvatore/challenge-eur">Check it out</a></p>
     </div>
 
     <div class="timeline-card">
@@ -934,6 +1033,27 @@
   </div>
 </section>
 
+<section id="photos">
+  <h2>Photos</h2>
+  <p style="text-align:center; color:#9ca3af;">Snapshots from projects, travel, and moments I love.</p>
+
+  <div class="photo-gallery">
+    <img src="photos/meInJacket.jpg" alt="Me in jacket">
+    <img src="photos/robot.jpg" alt="Humanoid Tech United">
+    <img src="photos/me goofy suit.jpg" alt="Me in suit">
+    <img src="photos/me and volleyball.jpg" alt="Volleyball">
+    <img src="photos/me and tesoro.jpg" alt="Me and Girlfriend">
+    <img src="photos/boys.jpg" alt="Me and the boys">
+  </div>
+
+  <!-- Lightbox Overlay -->
+  <div id="lightbox" class="lightbox">
+    <span class="close">&times;</span>
+    <img class="lightbox-content" id="lightbox-img">
+  </div>
+</section>
+
+
 
   <section id="contact">
   <h2>Contact</h2>
@@ -995,6 +1115,30 @@
     navigator.clipboard.writeText("your@email.com");
     alert("Email copied!");
   }
+
+  // --- Lightbox functionality ---
+const gallery = document.querySelectorAll('.photo-gallery img');
+const lightbox = document.getElementById('lightbox');
+const lightboxImg = document.getElementById('lightbox-img');
+const closeBtn = document.querySelector('.close');
+
+gallery.forEach(img => {
+  img.addEventListener('click', () => {
+    lightbox.style.display = 'block';
+    lightboxImg.src = img.src;
+  });
+});
+
+closeBtn.onclick = function() {
+  lightbox.style.display = 'none';
+};
+
+window.onclick = function(event) {
+  if (event.target === lightbox) {
+    lightbox.style.display = 'none';
+  }
+};
+
 
 </script>
 </body>
