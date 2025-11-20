@@ -738,6 +738,126 @@
 @media (max-width: 1024px) {
   .photo-gallery { column-count: 2; }
 }
+/* --- Current Status Button & Modal --- */
+
+.status-btn {
+  margin-top: var(--space-4);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.95rem;
+}
+
+/* Full-screen overlay, similar to lightbox but flex-centered */
+.status-modal {
+  display: none; /* toggled via JS */
+  position: fixed;
+  z-index: 998;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(4px);
+  justify-content: center;
+  align-items: center;
+  padding: var(--space-6);
+}
+
+/* The popup card itself */
+.status-modal-content {
+  background: linear-gradient(135deg, var(--surface-1) 0%, var(--surface-2) 100%);
+  border-radius: var(--radius-lg);
+  border: 1px solid rgba(59, 130, 246, 0.3);
+  box-shadow: var(--shadow-xl);
+  max-width: 480px;
+  width: 100%;
+  padding: var(--space-6) var(--space-6) var(--space-5);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Accent bar on top (like cards/timeline) */
+.status-modal-content::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+}
+
+/* Close button (top-right X) */
+.status-close {
+  position: absolute;
+  top: 14px;
+  right: 16px;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--muted);
+  cursor: pointer;
+  transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.status-close:hover {
+  color: var(--accent);
+  transform: scale(1.1);
+}
+
+.status-modal-content h3 {
+  margin-top: var(--space-3);
+  margin-bottom: var(--space-3);
+  font-size: 1.4rem;
+  color: var(--fg);
+}
+
+.status-subtitle {
+  font-size: 0.9rem;
+  color: var(--muted);
+  margin-bottom: var(--space-4);
+}
+
+/* Neat status list */
+.status-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.status-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  font-size: 0.95rem;
+  color: var(--muted);
+}
+
+/* Small colored tag on the left */
+.status-tag {
+  flex-shrink: 0;
+  padding: 0.15rem 0.6rem;
+  border-radius: 999px;
+  background: rgba(59, 130, 246, 0.12);
+  border: 1px solid rgba(59, 130, 246, 0.4);
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--primary);
+}
+
+/* Text body on the right */
+.status-body {
+  flex: 1;
+}
+
+/* Small responsive tweak */
+@media (max-width: 600px) {
+  .status-modal-content {
+    padding: var(--space-5) var(--space-4) var(--space-4);
+  }
+}
 
 @media (max-width: 640px) {
   .photo-gallery { column-count: 1; }
@@ -774,6 +894,12 @@
     <div class="about-text">
       <h2>About Me</h2>
       <p>I'm a self taught full-stack developer and Mechanical Engineering student at TU/e in Eindhoven, with a strong focus on robotics, automation, and industrial systems. Over the past year I've built end-to-end projects ranging from PLC-based diagnostics tools in a factory setting, to web-integrated puzzle delivery systems for real users. Beyond engineering, currently training for my first marathon additionally I love to travel, hike and build things with smart people.</p>
+
+      <!-- 🔽 New Current Status button -->
+      <button class="btn status-btn" id="status-trigger">
+        🧭 Current status
+      </button>
+      <!-- 🔼 New Current Status button -->
     </div>
     <div class="about-image">
       <img src="me.jpg" alt="Francesco Salvatore" class="profile-img">
@@ -1087,6 +1213,50 @@
   </div>
 </section>
 
+<!-- 🔽 Current Status Modal -->
+<div id="status-modal" class="status-modal">
+  <div class="status-modal-content">
+    <span class="status-close">&times;</span>
+    <h3>Current Status</h3>
+
+    <p class="status-subtitle">Quick snapshot of what I’m focused on right now.</p>
+    <ul class="status-list">
+      <li><span class="status-tag">Robotics</span>
+        <div class="status-body">
+          Developing a sequential clustering algorithm for the ball in tech united
+        </div>
+      </li>
+      
+      <li>
+        <span class="status-tag">Building</span>
+        <div class="status-body">
+          Building an autonomous watering system for my plants
+        </div>
+      </li>
+      <li>
+        <span class="status-tag">University</span>
+        <div class="status-body">
+          Dynamics and control systems, Astrophysics and a sustainable engine fuel simulations
+        </div>
+      </li>
+      <li>
+        <span class="status-tag">Training</span>
+        <div class="status-body">
+          In the gym 5 days a week, bulking to a 80 kg weight to gain muscle
+        </div>
+      </li>
+      <li>
+        <span class="status-tag">Reading</span>
+        <div class="status-body">
+          Elon Musk by Walter Isaacson
+        </div>
+      </li>
+    </ul>
+  </div>
+</div>
+<!-- 🔼 Current Status Modal -->
+
+
   <footer>
     <p>&copy; Francesco Salvatore</p>
   </footer>
@@ -1154,6 +1324,31 @@ window.onclick = function(event) {
     lightbox.style.display = 'none';
   }
 };
+
+/* Current Status Modal Logic */
+const statusTrigger = document.getElementById('status-trigger');
+const statusModal = document.getElementById('status-modal');
+const statusClose = document.querySelector('.status-close');
+
+if (statusTrigger && statusModal && statusClose) {
+  statusTrigger.addEventListener('click', () => {
+    statusModal.style.display = 'flex';
+  });
+
+  statusClose.addEventListener('click', () => {
+    statusModal.style.display = 'none';
+  });
+
+  statusModal.addEventListener('click', (e) => {
+    if (e.target === statusModal) {
+      statusModal.style.display = 'none';
+    }
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') statusModal.style.display = 'none';
+  });
+}
 
 
 </script>
