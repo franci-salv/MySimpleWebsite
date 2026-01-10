@@ -946,29 +946,8 @@
   color: var(--fg);
 }
 
-.status-subtitle {
-  font-size: 0.9rem;
-  color: var(--muted);
-  margin-bottom: var(--space-4);
-}
 
-/* Neat status list */
-.status-list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-3);
-}
 
-.status-list li {
-  display: flex;
-  align-items: flex-start;
-  gap: var(--space-3);
-  font-size: 0.95rem;
-  color: var(--muted);
-}
 
 /* Small colored tag on the left */
 .status-tag {
@@ -1001,6 +980,40 @@
   .photo-gallery img {
     margin-bottom: var(--space-4);
   }
+}
+
+/* Navigation Buttons Container */
+.status-nav {
+  margin-top: var(--space-6);
+  padding-top: var(--space-4);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.nav-btn {
+  background: rgba(59, 130, 246, 0.1);
+  border: 1px solid rgba(59, 130, 246, 0.3);
+  color: var(--primary);
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  flex: 1;
+}
+
+.nav-btn:hover:not(:disabled) {
+  background: var(--primary);
+  color: white;
+}
+
+.nav-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+  filter: grayscale(1);
 }
 
 
@@ -1440,54 +1453,22 @@
   </div>
 </section>
 
-<!-- 🔽 Current Status Modal -->
-<div id="status-modal" class="status-modal">
+
+<!-- 🔼 Current Status Modal -->
+ <div id="status-modal" class="status-modal">
   <div class="status-modal-content">
     <span class="status-close">&times;</span>
-    <h3>Current Status</h3>
+    <h3 id="status-title">Current Status</h3>
+    <p id="status-subtitle" class="status-subtitle">Quick snapshot of what I’m focused on right now.</p>
+    
+    <ul class="status-list" id="status-list-container"></ul>
 
-    <p class="status-subtitle">Quick snapshot of what I’m focused on right now.</p>
-    <ul class="status-list">
-      <li><span class="status-tag">Robotics</span>
-        <div class="status-body">
-          Developing a sequential clustering algorithm for the ball in tech united
-        </div>
-      </li>
-      
-      <li>
-        <span class="status-tag">Building</span>
-        <div class="status-body">
-          Building an autonomous watering system for my plants
-        </div>
-      </li>
-      <li>
-        <span class="status-tag">University</span>
-        <div class="status-body">
-          Dynamics and control systems, Astrophysics and a sustainable engine fuel simulations
-        </div>
-      </li>
-      <li>
-        <span class="status-tag">Training</span>
-        <div class="status-body">
-          In the gym 5 days a week, bulking to a 80 kg weight to gain muscle
-        </div>
-      </li>
-      <li>
-        <span class="status-tag">Reading</span>
-        <div class="status-body">
-          Death's End (3 body problem trilogy) Liu Cixin
-        </div>
-      </li>
-            <li>
-        <span class="status-tag">Hit song</span>
-        <div class="status-body">
-          I like it, Alesso & Nate Smith
-        </div>
-      </li>
-    </ul>
+    <div class="status-nav">
+      <button id="prev-status" class="nav-btn">← Previously</button>
+      <button id="next-status" class="nav-btn">Next →</button>
+    </div>
   </div>
 </div>
-<!-- 🔼 Current Status Modal -->
 
 
   <footer>
@@ -1497,93 +1478,177 @@
 
   <script>
 
-  // Toggle skill grid visibility
+  /* Current Status Data - Add your history here! */
+const statusHistory = [
+  {
+    period: "Current Status",
+    subtitle: "Quick snapshot of what I’m focused on right now.",
+    items: [
+      { tag: "Robotics", body: "Developing a sequential clustering algorithm for the ball in tech united" },
+      { tag: "Building", body: "Building my own chess clock with an arduino and 3D printed parts" },
+      { tag: "University", body: "Dynamics for Robotics systems, Solid Mechanics and Controlling a robotic arm MATLAB" },
+      { tag: "Training", body: "Training in kickboxing at Impact Eindhoven" },
+      { tag: "Reading", body: "Your inner fish by Neil Shubin" },
+      { tag: "Hit song", body: "I RUN, Haven & Kaitlin Aragon" }
+    ]
+  },
+  {
+    period: "Late 2025",
+    subtitle: "What I was working on at the end of last year.",
+    items: [
+      { tag: "Robotics", body: "Developing a sequential clustering algorithm for the ball in tech united" },
+      { tag: "Building", body: "Finished the first prototype of this website" },
+      { tag: "Travel", body: "Went interrailing across the balkans" },
+      { tag: "University", body: "Dynamics and control systems, Astrophysics and engine fuel simulations" },      
+      { tag: "Training", body: "Training for my marathon in Eindhoven" },
+      { tag: "Reading", body: "3 body problem, Death's End Liu Cixin" },
+      { tag: "Hit song", body: "I like it, Alesso & Nate Smith" }
+
+    ]
+  }
+];
+
+let currentStageIndex = 0;
+
+const statusTrigger = document.getElementById('status-trigger');
+const statusModal = document.getElementById('status-modal');
+const statusClose = document.querySelector('.status-close');
+const listContainer = document.getElementById('status-list-container');
+const statusTitle = document.getElementById('status-title');
+const statusSubtitle = document.getElementById('status-subtitle');
+const prevBtn = document.getElementById('prev-status');
+const nextBtn = document.getElementById('next-status');
+
+function updateStatusModal(index) {
+  const data = statusHistory[index];
+  
+  // Update Header
+  statusTitle.innerText = data.period;
+  statusSubtitle.innerText = data.subtitle;
+  
+  // Clear and rebuild list
+  listContainer.innerHTML = '';
+  data.items.forEach(item => {
+    const li = document.createElement('li');
+    li.innerHTML = `
+      <span class="status-tag">${item.tag}</span>
+      <div class="status-body">${item.body}</div>
+    `;
+    listContainer.appendChild(li);
+  });
+
+  // Handle Button States
+  prevBtn.disabled = index === statusHistory.length - 1;
+  nextBtn.disabled = index === 0;
+}
+
+// Event Listeners
+if (statusTrigger && statusModal) {
+  statusTrigger.addEventListener('click', () => {
+    currentStageIndex = 0; // Reset to current when opening
+    updateStatusModal(currentStageIndex);
+    statusModal.style.display = 'flex';
+  });
+
+  statusClose.addEventListener('click', () => statusModal.style.display = 'none');
+  
+  prevBtn.addEventListener('click', () => {
+    if (currentStageIndex < statusHistory.length - 1) {
+      currentStageIndex++;
+      updateStatusModal(currentStageIndex);
+    }
+  });
+
+  nextBtn.addEventListener('click', () => {
+    if (currentStageIndex > 0) {
+      currentStageIndex--;
+      updateStatusModal(currentStageIndex);
+    }
+  });
+
+  // Close on outside click
+  statusModal.addEventListener('click', (e) => {
+    if (e.target === statusModal) statusModal.style.display = 'none';
+  });
+}
+
+
+</script>
+
+
+<script>
+  // 1. Toggle skill grid visibility
   document.querySelectorAll('.toggle-skillset').forEach(btn => {
     btn.addEventListener('click', () => {
       const grid = btn.nextElementSibling;
-      grid.style.display = grid.style.display === 'grid' ? 'none' : 'grid';
+      if (grid) {
+        grid.style.display = grid.style.display === 'grid' ? 'none' : 'grid';
+      }
     });
   });
 
-  // Timeline scroll hint logic
+  // 2. Timeline scroll hint logic
   const timeline = document.querySelector('.timeline-container');
   const hint = document.getElementById('timeline-hint');
+  
   function updateHintVisibility() {
     if (!timeline || !hint) return;
     const atEnd = Math.ceil(timeline.scrollLeft + timeline.clientWidth) >= timeline.scrollWidth;
     const atStart = timeline.scrollLeft <= 2;
-    // Hide if fully scrolled to end or there is no overflow
     if (timeline.scrollWidth <= timeline.clientWidth || !atStart) {
       hint.classList.add('hide');
     } else {
       hint.classList.remove('hide');
     }
   }
+
   if (timeline && hint) {
     updateHintVisibility();
     timeline.addEventListener('scroll', updateHintVisibility, { passive: true });
     window.addEventListener('resize', updateHintVisibility);
-    // Hide on first user interaction
     timeline.addEventListener('pointerdown', () => hint.classList.add('hide'), { once: true });
     timeline.addEventListener('wheel', () => hint.classList.add('hide'), { once: true });
-    // Auto-hide after a few seconds to be non-intrusive
     setTimeout(() => hint.classList.add('hide'), 5000);
   }
 
+  // 3. Email Copy Function
   function copyEmail() {
-    navigator.clipboard.writeText("your@email.com");
-    alert("Email copied!");
+    // Note: This requires a secure origin (HTTPS) to work in most browsers
+    navigator.clipboard.writeText("your@email.com").then(() => {
+      alert("Email copied!");
+    }).catch(err => {
+      console.error('Failed to copy: ', err);
+    });
   }
 
-  // --- Lightbox functionality ---
-const gallery = document.querySelectorAll('.photo-gallery img');
-const lightbox = document.getElementById('lightbox');
-const lightboxImg = document.getElementById('lightbox-img');
-const closeBtn = document.querySelector('.close');
+  // 4. Lightbox functionality
+  const gallery = document.querySelectorAll('.photo-gallery img');
+  const lightbox = document.getElementById('lightbox');
+  const lightboxImg = document.getElementById('lightbox-img');
+  const closeBtn = document.querySelector('.lightbox-close'); // Changed to be more specific
 
-gallery.forEach(img => {
-  img.addEventListener('click', () => {
-    lightbox.style.display = 'block';
-    lightboxImg.src = img.src;
-  });
-});
+  if (lightbox && lightboxImg) {
+    gallery.forEach(img => {
+      img.addEventListener('click', () => {
+        lightbox.style.display = 'block';
+        lightboxImg.src = img.src;
+      });
+    });
 
-closeBtn.onclick = function() {
-  lightbox.style.display = 'none';
-};
-
-window.onclick = function(event) {
-  if (event.target === lightbox) {
-    lightbox.style.display = 'none';
-  }
-};
-
-/* Current Status Modal Logic */
-const statusTrigger = document.getElementById('status-trigger');
-const statusModal = document.getElementById('status-modal');
-const statusClose = document.querySelector('.status-close');
-
-if (statusTrigger && statusModal && statusClose) {
-  statusTrigger.addEventListener('click', () => {
-    statusModal.style.display = 'flex';
-  });
-
-  statusClose.addEventListener('click', () => {
-    statusModal.style.display = 'none';
-  });
-
-  statusModal.addEventListener('click', (e) => {
-    if (e.target === statusModal) {
-      statusModal.style.display = 'none';
+    if (closeBtn) {
+      closeBtn.addEventListener('click', () => {
+        lightbox.style.display = 'none';
+      });
     }
-  });
 
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') statusModal.style.display = 'none';
-  });
-}
-
-
+    // Safer way to handle background clicks
+    window.addEventListener('click', (event) => {
+      if (event.target === lightbox) {
+        lightbox.style.display = 'none';
+      }
+    });
+  }
 </script>
+
 </body>
 </html>
