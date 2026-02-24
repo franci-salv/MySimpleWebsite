@@ -1017,7 +1017,60 @@
 }
 
 
+/* --- 3D Printing Hall Expandable Section --- */
+.printing-hall-details {
+  margin-top: var(--space-8);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  border: 1px solid rgba(59, 130, 246, 0.2);
+  background: rgba(17, 24, 39, 0.4);
+}
 
+.printing-hall-summary {
+  list-style: none; /* Removes default arrow */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: var(--space-4);
+  background: linear-gradient(135deg, var(--surface-1) 0%, var(--surface-2) 100%);
+  color: var(--accent);
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  user-select: none;
+}
+
+.printing-hall-summary:hover {
+  background: rgba(59, 130, 246, 0.1);
+  color: var(--fg);
+}
+
+/* Custom Arrow Rotate */
+.printing-hall-details[open] .printing-hall-summary {
+  border-bottom: 1px solid rgba(59, 130, 246, 0.2);
+}
+
+.printing-hall-summary::after {
+  content: '▶';
+  font-size: 0.8rem;
+  transition: transform 0.3s ease;
+}
+
+.printing-hall-details[open] .printing-hall-summary::after {
+  transform: rotate(90deg);
+}
+
+/* Internal Gallery Padding */
+.printing-hall-content {
+  padding: var(--space-6);
+  animation: slideDown 0.4s ease-out;
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
 
 
   </style>
@@ -1433,6 +1486,21 @@
     <span class="close">&times;</span>
     <img class="lightbox-content" id="lightbox-img">
   </div>
+
+  <details class="printing-hall-details">
+  <summary class="printing-hall-summary">🏗️ View 3D Printing Hall</summary>
+  <div class="printing-hall-content">
+    <p style="text-align:center; color:#9ca3af; margin-bottom: 2rem;">3D prints that made my life better and prototypes from my Bambu A1 (more coming soon).</p>
+    
+    <div class="photo-gallery">
+      <img src="photos/3DPrintHall/GorillaPhoneHolder.jpeg" alt="Phone holder gorilla">
+      <img src="photos/3DPrintHall/SoapBox.jpeg" alt="Soap box">
+      <img src="photos/3DPrintHall/CableSorting.jpeg" alt="Cable sorting">
+
+      </div>
+  </div>
+</details>
+
 </section>
 
 
@@ -1641,8 +1709,8 @@ if (statusTrigger && statusModal) {
   // 3. Email Copy Function
   function copyEmail() {
     // Note: This requires a secure origin (HTTPS) to work in most browsers
-    navigator.clipboard.writeText("your@email.com").then(() => {
-      alert("Email copied!");
+    navigator.clipboard.writeText("francisalv@icloud.com").then(() => {
+    alert("Email copied!");
     }).catch(err => {
       console.error('Failed to copy: ', err);
     });
