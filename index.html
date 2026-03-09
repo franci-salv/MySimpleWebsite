@@ -1072,6 +1072,100 @@
   to { opacity: 1; transform: translateY(0); }
 }
 
+/* --- Interactive SVG Map Section --- */
+.map-container {
+  position: relative;
+  background: linear-gradient(135deg, var(--surface-1) 0%, var(--surface-2) 100%);
+  border: 1px solid rgba(59, 130, 246, 0.2);
+  border-radius: var(--radius-lg);
+  padding: var(--space-4);
+  box-shadow: var(--shadow-md);
+  min-height: 520px;
+
+  
+  /* NEW: Allow horizontal swiping on small screens */
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch; /* Buttery smooth iOS scrolling */
+  max-width: 1000px;
+  margin: 0 auto;
+  touch-action: pan-x pan-y; 
+}
+
+/* Hide the scrollbar for a cleaner look */
+.map-container::-webkit-scrollbar {
+  display: none;
+}
+.map-container {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.world-map-svg {
+  width: 100%;
+  min-width: 700px;
+  height: 500px;        /* ← was "auto", SVGs collapse with auto */
+  display: block;       /* ← removes inline gap */
+  stroke: var(--bg);
+  stroke-width: 0.5px;
+  stroke-linejoin: round;
+}
+
+.country-path {
+  fill: var(--surface-3); /* Unvisited color */
+  transition: fill 0.2s ease, filter 0.2s ease, transform 0.2s ease;
+  cursor: pointer;
+  /* Removes default blue tap highlight on touch screens */
+  -webkit-tap-highlight-color: transparent; 
+  transform-origin: center;
+}
+
+/* Hover/Focus states */
+/* This media query ensures tap-to-click doesn't leave 'stuck' hover states on touchscreens */
+@media (hover: hover) and (pointer: fine) {
+  .country-path:hover {
+    fill: var(--primary);
+    filter: drop-shadow(0 0 5px rgba(59, 130, 246, 0.5));
+    outline: none;
+  }
+  
+  .country-path.visited:hover {
+    fill: var(--accent-hover);
+    filter: drop-shadow(0 0 10px rgba(245, 158, 11, 0.8));
+  }
+}
+
+/* Active state gives physical feedback on a tap or pen press */
+.country-path:active {
+  transform: scale(0.98);
+}
+
+/* Visited Countries glow using your accent variable */
+.country-path.visited {
+  fill: var(--accent); 
+}
+
+/* The floating tooltip */
+.map-tooltip {
+  position: absolute;
+  display: none;
+  background: rgba(10, 15, 26, 0.95);
+  color: var(--fg);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--primary);
+  /* Crucial: stops the tooltip from intercepting the pointer and causing flicker */
+  pointer-events: none; 
+  font-size: 0.85rem;
+  font-weight: 600;
+  z-index: 10;
+  box-shadow: var(--shadow-lg);
+  white-space: nowrap;
+  /* Hardware acceleration for smooth tracking on high refresh rate screens */
+  transform: translateZ(0); 
+  will-change: left, top;
+}
+
 
   </style>
 <script>
@@ -1110,6 +1204,7 @@
     <a href="#services">Services</a>
     <!--<a href="#travels">Travels</a>-->
     <a href="#photos">Photos</a>
+    <a href="#travels">Travels</a>
     <a href="#contact">Contact</a>
   </nav>
 
@@ -1503,7 +1598,14 @@
 
 </section>
 
-
+<section id="travels" style="margin-top: 60px;">
+  <h2>World Traveller</h2>
+  <p style="text-align:center; color:#9ca3af;">Countries I've travelled to</p>
+  <div class="map-container" style="position:relative;">
+    <div id="map-tooltip" class="map-tooltip"></div>
+    <svg id="world-map" class="world-map-svg" viewBox="0 0 1000 500"></svg>
+  </div>
+</section>
 
   <section id="contact">
   <h2>Contact</h2>
@@ -1743,6 +1845,83 @@ if (statusTrigger && statusModal) {
       }
     });
   }
+
+</script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/3.0.2/topojson.min.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const width = 1000, height = 500;
+    const tooltip = document.getElementById('map-tooltip');
+    const container = document.querySelector('.map-container');
+
+    // Numeric ISO 3166-1 codes
+    const travelLog = {
+      '124': 'Canada — Family trip, August 2024',
+      '380': 'Italy — Turin, Napoli, Capri, July 2024',
+      '840': 'USA — New York with my parents Nov 2023',
+      '250': 'France — Paris for new years Jan 2025',
+      '336': 'the Vatican — visiting unc ',
+      '203': 'Czech Republic — Interrailing 2025',
+      '348': 'Hungary — Interrailing 2025',
+      '705': 'Slovenia — Interrailing 2025',
+      '070': 'Bosnia and Herzegovina — Interrailing 2025',
+      '191': 'Croatia — Interrailing 2025',
+      '352': 'Iceland — Family trip',
+      '578': 'Norway — Family trip',
+      '040': 'Austria — Valentines trip Feb 2026',
+      '724': 'Spain — School Trip in Madrid 2023',
+      '372': 'Ireland  — Lived here 2020–2024',
+      '56':  'Belgium  — Born & raised here 2006-2020',
+      '528': 'Netherlands  — TU/e, marathons & more',
+      '276': 'Germany  — Skydiving, August 2025',
+      '620': 'Portugal  — Mountain climbing, March 2025'
+    };
+
+    const svg = d3.select('#world-map')
+      .attr('viewBox', `0 0 ${width} ${height}`);
+
+    const projection = d3.geoNaturalEarth1()
+      .scale(153)
+      .translate([width / 2, height / 2]);
+
+    const pathGen = d3.geoPath().projection(projection);
+
+    fetch('countries-110m.json')
+      .then(r => r.json())
+      .then(world => {
+        const countries = topojson.feature(world, world.objects.countries);
+
+        svg.selectAll('path')
+          .data(countries.features)
+          .enter().append('path')
+          .attr('class', d => {
+            const id = String(+d.id); // strips leading zeros e.g. "056" → "56"
+            return 'country-path' + (travelLog[id] ? ' visited' : '');
+          })
+          .attr('d', pathGen)
+          .on('pointerenter', function(event, d) {
+            const note = travelLog[String(+d.id)];
+            if (!note) return;
+            tooltip.textContent = note;
+            tooltip.style.display = 'block';
+          })
+          .on('pointermove', function(event) {
+            const rect = container.getBoundingClientRect();
+            tooltip.style.left  = (event.clientX - rect.left) + 'px';
+            tooltip.style.top   = (event.clientY - rect.top - 44) + 'px';
+            tooltip.style.transform = 'translate(-50%, 0)';
+          })
+          .on('pointerleave', function() {
+            tooltip.style.display = 'none';
+          });
+      })
+      .catch(() => {
+        document.querySelector('.map-container').innerHTML = 
+          '<p style="text-align:center;color:var(--muted);padding:2rem;">Map failed to load — check your internet connection.</p>';
+      });
+  });
 </script>
 
 </body>
