@@ -620,27 +620,29 @@
       scrollbar-width: none; /* Firefox */
     }
 
-    .service-container {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-8);
-  margin-top: var(--space-8);
+  .service-container {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* 4 cards in a row on desktop */
+  gap: var(--space-6, 1.5rem);
+  margin-top: var(--space-8, 2rem);
+  align-items: start;
 }
 
 .service-card {
   display: flex;
-  align-items: flex-start;
-  gap: var(--space-6);
+  flex-direction: column;
   background: linear-gradient(135deg, var(--surface-1) 0%, var(--surface-2) 100%);
   border: 1px solid rgba(59, 130, 246, 0.2);
-  padding: var(--space-8);
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-md);
+  padding: var(--space-6, 1.5rem);
+  border-radius: var(--radius-lg, 12px);
+  box-shadow: var(--shadow-md, 0 4px 6px rgba(0,0,0,0.1));
   transition: all 0.3s ease;
   position: relative;
   overflow: hidden;
+  cursor: pointer; /* Indicates it can be clicked */
 }
 
+/* Hover Effects */
 .service-card::before {
   content: '';
   position: absolute;
@@ -648,141 +650,103 @@
   left: 0;
   right: 0;
   height: 4px;
-  background: linear-gradient(90deg, var(--primary), var(--accent));
+  background: linear-gradient(90deg, var(--primary, #3b82f6), var(--accent, #60a5fa));
   transform: scaleX(0);
   transition: transform 0.3s ease;
 }
 
-.service-card:hover::before {
+.service-card:hover::before,
+.service-card.active::before {
   transform: scaleX(1);
 }
 
 .service-card:hover {
-  transform: translateY(-8px);
-  box-shadow: var(--shadow-xl);
-  border-color: var(--primary);
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-xl, 0 10px 15px rgba(0,0,0,0.15));
+  border-color: var(--primary, #3b82f6);
+}
+
+/* Keep header elements aligned */
+.card-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
 }
 
 .service-icon {
   font-size: 2.5rem;
-  flex-shrink: 0;
-  color: var(--accent);
+  color: var(--accent, #60a5fa);
+  margin-bottom: 0.5rem;
   filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
 }
 
 .service-card h3 {
-  color: var(--fg);
-  font-size: 1.5rem;
+  color: var(--fg, #ffffff);
+  font-size: 1.25rem;
   font-weight: 600;
-  margin-bottom: var(--space-3);
+  margin: 0;
 }
 
-.service-card p {
-  color: var(--muted);
-  line-height: 1.7;
-  margin-bottom: var(--space-4);
+/* Details wrapper hidden by default */
+.card-details {
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition: max-height 0.4s ease, opacity 0.4s ease, margin-top 0.4s ease;
 }
 
-@media (max-width: 700px) {
-  .service-card {
-    flex-direction: column;
-    text-align: center;
-    align-items: center;
-  }
+/* Expanded state */
+.service-card.active .card-details {
+  max-height: 1000px; /* Arbitrary large number to allow content to flow */
+  opacity: 1;
+  margin-top: 1rem;
 }
 
-.toggle-skillset {
-  margin-top: var(--space-4);
-  background: linear-gradient(135deg, var(--surface-3) 0%, var(--surface-2) 100%);
-  border: 1px solid rgba(59, 130, 246, 0.3);
-  color: var(--accent);
-  font-weight: 600;
-  cursor: pointer;
-  padding: var(--space-2) var(--space-4);
-  border-radius: var(--radius-md);
-  transition: all 0.3s ease;
-  box-shadow: var(--shadow-sm);
-}
-
-.toggle-skillset:hover {
-  background: linear-gradient(135deg, var(--accent) 0%, var(--accent-hover) 100%);
-  color: white;
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-md);
-}
-
-.skillset {
-  list-style: none;
-  margin: 0.8rem 0 0;
-  padding-left: 1.2rem;
-  text-align: left;
-  display: none;
-  color: #e0e1dd;
-}
-
-.skillset li {
-  margin-bottom: 0.4rem;
+.card-details p {
+  color: var(--muted, #94a3b8);
   font-size: 0.9rem;
+  line-height: 1.5;
+  text-align: center;
+  margin-bottom: 1rem;
 }
 
-
-/* --- Skillset as cards --- */
+/* Skillset Grid inside the card */
 .skillset-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: 0.8rem;
-  margin-top: 1rem;
-  display: none;            /* stays hidden until toggled */
+  grid-template-columns: 1fr 1fr; /* 2 skills per row inside the card */
+  gap: 0.5rem;
 }
 
 .skill-card {
   background: linear-gradient(135deg, var(--surface-3) 0%, var(--surface-2) 100%);
   border: 1px solid rgba(59, 130, 246, 0.2);
-  padding: var(--space-3) var(--space-4);
-  border-radius: var(--radius-md);
+  padding: 0.4rem;
+  border-radius: var(--radius-md, 6px);
   text-align: center;
-  font-size: 0.9rem;
+  font-size: 0.75rem;
   font-weight: 500;
-  color: var(--fg);
+  color: var(--fg, #e2e8f0);
   box-shadow: var(--shadow-sm);
   transition: all 0.3s ease;
-  cursor: default;
-  position: relative;
-  overflow: hidden;
-}
-
-.skill-card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.1), transparent);
-  transition: left 0.5s;
-}
-
-.skill-card:hover::before {
-  left: 100%;
 }
 
 .skill-card:hover {
   background: linear-gradient(135deg, var(--primary) 0%, var(--primary-hover) 100%);
   color: white;
-  transform: translateY(-4px);
-  box-shadow: var(--shadow-lg);
   border-color: var(--primary);
 }
 
-/* Responsive behavior */
-@media (max-width: 900px) {
-  .skillset-grid {
-    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+/* Responsive Breakpoints */
+@media (max-width: 1024px) {
+  .service-container {
+    grid-template-columns: repeat(2, 1fr); /* 2x2 grid on tablets */
   }
 }
+
 @media (max-width: 600px) {
-  .skillset-grid {
-    grid-template-columns: 1fr 1fr;   /* 2 per row on phones */
+  .service-container {
+    grid-template-columns: 1fr; /* Stack vertically on phones */
   }
 }
 
@@ -1352,138 +1316,89 @@
   </div>
 </section>
 
-
 <section id="services" style="margin-top: 60px;">
   <h2>Products & Services</h2>
   <p style="text-align:center; color:#778da9;">
-    Here’s how I can help your business, projects or you right now.
+    Here’s how I can help your business, projects or you right now. Click a card to learn more.
   </p>
 
   <div class="service-container">
 
     <div class="service-card">
-      <div class="service-icon">🛠️</div>
-      <div>
-        <h3>CAD Design & Robotics Engineering</h3>
-          <p>I turn sketches into buildable solutions, whether that’s a house extension, a studio layout, or a precision assembly. Using SolidWorks, Siemens NX, and Simcenter, I create reliable models and simulations, and can ship physical prototypes with my Bambu A1 3D printer.</p>
-        <button  class="btn" onclick="copyEmail()">Copy Email</button>
-        <button class="toggle-skillset">My Skillset</button>
-
-            <div class="skillset-grid">
-      <div class="skill-card">SolidWorks</div>
-      <div class="skill-card">Siemens NX</div>
-      <div class="skill-card">Fusion 360</div>
-      <div class="skill-card">Onshape</div>
-      <div class="skill-card">SketchUp</div>
-      <div class="skill-card">Tech drawings</div>
-      <div class="skill-card">Design for Manufacturability</div>
-      <div class="skill-card">3D Printing<br> (Bambu A1)</div>
-    </div>
-
-
-
-
+      <div class="card-header">
+        <div class="service-icon">🛠️</div>
+        <h3>CAD & Robotics</h3>
       </div>
-    </div>
-
-    <div class="service-card">
-      <div class="service-icon">💻</div>
-      <div>
-        <h3>Full-Stack Development</h3>
-          <p>From AI image recognition to IoT-focused study tools, I build fast and reliable applications across web, embedded, and automation projects. I’ve delivered solutions with React, Astro, Node.js, Python, WhatsApp API, and custom integrations for real-world use cases like cycling weather checks and DFT signal processing.</p>
-        <button  class="btn" onclick="copyEmail()">Copy Email</button>
-        <button class="toggle-skillset">My Skillset</button>
-
+      <div class="card-details">
+        <p>Turning sketches into buildable solutions and precision assemblies using advanced modeling and physical 3D prototyping.</p>
         <div class="skillset-grid">
-      <div class="skill-card">HTML, CSS</div>
-      <div class="skill-card">Python <br> C++, ROS</div>
-      <div class="skill-card">Matlab(+simulink)</div>
-
-      <div class="skill-card">Git</div>
-      <div class="skill-card">Firebase</div>
-
-      <div class="skill-card">Stripe API, Twilio,  <br> Webhoooks</div>
-
-      <div class="skill-card">Render</div>
-      <div class="skill-card">Vercel</div>
-    </div>
+          <div class="skill-card">SolidWorks</div>
+          <div class="skill-card">Siemens NX</div>
+          <div class="skill-card">Fusion 360</div>
+          <div class="skill-card">Onshape</div>
+          <div class="skill-card">SketchUp</div>
+          <div class="skill-card">Tech drawings</div>
+          <div class="skill-card">DFM</div>
+          <div class="skill-card">3D Printing</div>
+        </div>
       </div>
     </div>
 
     <div class="service-card">
-      <div class="service-icon">⚡</div>
-      <div>
-        <h3>Industrial PLC Automation, HMI & SCADA</h3>
-          <p>Hands-on experience in factory automation, from building a diagnostics IP toolkit at Pringles to simulating PLC logic with LogixPro. I specialize in secure PLC programming (ladder logic & structured text), RDC integration, and IoT-ready HMI systems that map complex IP paths into clear, actionable insights.</p>
-        <button  class="btn" onclick="copyEmail()">Copy Email</button>
-        <button class="toggle-skillset">My Skillset</button>
-
-            <div class="skillset-grid">
-      <div class="skill-card">
-        Rockwell / Allen-Bradley
+      <div class="card-header">
+        <div class="service-icon">💻</div>
+        <h3>Full-Stack Dev</h3>
       </div>
-      <div class="skill-card">
-        Studio 5000 Logix Designer
+      <div class="card-details">
+        <p>Building fast, reliable applications across web, embedded, and automation projects with modern tech stacks.</p>
+        <div class="skillset-grid">
+          <div class="skill-card">HTML, CSS</div>
+          <div class="skill-card">Python, C++, ROS</div>
+          <div class="skill-card">Matlab (+Simulink)</div>
+          <div class="skill-card">Git</div>
+          <div class="skill-card">Firebase</div>
+          <div class="skill-card">Stripe, Twilio</div>
+          <div class="skill-card">Render</div>
+          <div class="skill-card">Vercel</div>
+        </div>
       </div>
-      <div class="skill-card">
-        FactoryTalk View SE / ME
-      </div>
-      <div class="skill-card">
-        HMI / SCADA
-      </div>
-      <div class="skill-card">
-        DLR
-      </div>
-      <div class="skill-card">
-        Ethernet /IP
-      </div>
-      <div class="skill-card">
-        ControlNet
-      </div>
-      <div class="skill-card">
-        Ladder Logic
-      </div>
-      <div class="skill-card">
-        Structured Text
-      </div>
-      <div class="skill-card">
-        Function Block Diagram
-      </div>
-      <div class="skill-card">
-        Device Integration<br>(VFDs, Modbus)
-      </div>
-      <div class="skill-card">
-        LogixPro
-      </div>
-      <div class="skill-card">
-        Factory I/O
-      </div>
-
-      </div>
-    </div>
     </div>
 
     <div class="service-card">
-      <div class="service-icon">🎓</div>
-      <div>
+      <div class="card-header">
+        <div class="service-icon">⚡</div>
+        <h3>Industrial Automation</h3>
+      </div>
+      <div class="card-details">
+        <p>Specializing in secure PLC programming, RDC integration, and IoT-ready HMI/SCADA systems for factory automation.</p>
+        <div class="skillset-grid">
+          <div class="skill-card">Allen-Bradley</div>
+          <div class="skill-card">Studio 5000</div>
+          <div class="skill-card">FactoryTalk</div>
+          <div class="skill-card">HMI / SCADA</div>
+          <div class="skill-card">DLR & Ethernet/IP</div>
+          <div class="skill-card">Ladder Logic</div>
+          <div class="skill-card">Structured Text</div>
+          <div class="skill-card">Device Integration</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="service-card">
+      <div class="card-header">
+        <div class="service-icon">🎓</div>
         <h3>Tutoring</h3>
-        <p>Tutoring (Maths, Applied Maths, DCG, Italian/Dutch Oral). I help students understand faster, score higher, and feel confident. Proof: 625/625 in the Irish Leaving Cert + national DCG award, sessions are online </p>
-        <button  class="btn" onclick="copyEmail()">Copy Email</button>
-        <button class="toggle-skillset">My Skillset</button>
+      </div>
+      <div class="card-details">
+        <p>Helping students understand faster and score higher. 625/625 in the Irish Leaving Cert + national DCG award.</p>
         <div class="skillset-grid">
-      <div class="skill-card">
-        Subjects:<br>Maths, Applied Maths, DCG, Computer Science,<br>Italian Oral, Dutch Oral
-      </div>
-      <div class="skill-card">
-        Exam Prep:<br>Timed practice, past papers,<br>Structured notes
-      </div>
-      <div class="skill-card">
-        Formats:<br>Online (Zoom / Teams) or<br>In-person (Eindhoven)
-      </div>
-      <div class="skill-card">
-        Credibility:<br>625/625 Leaving Cert,<br>7 H1s, National DCG Award
-      </div>
-    </div>
+          <div class="skill-card">Maths / Applied</div>
+          <div class="skill-card">DCG</div>
+          <div class="skill-card">Computer Science</div>
+          <div class="skill-card">Italian / Dutch</div>
+          <div class="skill-card">Exam Prep</div>
+          <div class="skill-card">Online / In-person</div>
+        </div>
       </div>
     </div>
 
@@ -1774,13 +1689,19 @@ if (statusTrigger && statusModal) {
 
 
 <script>
-  // 1. Toggle skill grid visibility
-  document.querySelectorAll('.toggle-skillset').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const grid = btn.nextElementSibling;
-      if (grid) {
-        grid.style.display = grid.style.display === 'grid' ? 'none' : 'grid';
-      }
+  document.addEventListener("DOMContentLoaded", () => {
+    const cards = document.querySelectorAll('.service-card');
+
+    cards.forEach(card => {
+      card.addEventListener('click', () => {
+        // Optional: Close other cards when one is clicked
+        cards.forEach(c => {
+          if (c !== card) c.classList.remove('active');
+        });
+        
+        // Toggle the clicked card
+        card.classList.toggle('active');
+      });
     });
   });
 
@@ -1876,7 +1797,8 @@ if (statusTrigger && statusModal) {
       '56':  'Belgium  — Born & raised here 2006-2020',
       '528': 'Netherlands  — TU/e, marathons & more',
       '276': 'Germany  — Skydiving, August 2025',
-      '620': 'Portugal  — Mountain climbing, March 2025'
+      '620': 'Portugal  — Mountain climbing, March 2025',
+      '826': 'UK  — visited Canterbury School trip, 2018',
     };
 
     const svg = d3.select('#world-map')
