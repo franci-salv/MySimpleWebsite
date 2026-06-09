@@ -5,19 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Francesco Salvatore</title>
   <link rel="icon" type="image/png" href="favicon.png">
-  <script>
-  function copyEmail() {
-    const email = "francisalv@icloud.com"; // <-- put your email here
-    navigator.clipboard.writeText(email).then(() => {
-      const btn = event.target;
-      const originalText = btn.textContent;
-      btn.textContent = "Copied!";
-      setTimeout(() => {
-        btn.textContent = originalText;
-      }, 2000); // reset after 2 sec
-    });
-  }
-</script>
   <style>
     :root {
       --bg: #0a0f1a;
@@ -1933,7 +1920,7 @@
     <div class="contact-social">
       <h3>Or connect with me on</h3>
       <div class="button-group">
-        <button class="btn" onclick="copyEmail()">Copy Email</button>
+        <a href="mailto:francisalv@icloud.com" class="btn">Email Me</a>
         <a href="https://github.com/franci-salv" target="_blank" class="btn">GitHub</a>
         <a href="https://www.linkedin.com/in/francesco-salvatore-982288239/" target="_blank" class="btn">LinkedIn</a>
         <a href="Francesco_Resume.pdf" class="btn" download>Download CV</a>
@@ -2231,16 +2218,6 @@ if (statusTrigger && statusModal) {
     timeline.addEventListener('pointerdown', () => hint.classList.add('hide'), { once: true });
     timeline.addEventListener('wheel', () => hint.classList.add('hide'), { once: true });
     setTimeout(() => hint.classList.add('hide'), 5000);
-  }
-
-  // 3. Email Copy Function
-  function copyEmail() {
-    // Note: This requires a secure origin (HTTPS) to work in most browsers
-    navigator.clipboard.writeText("francisalv@icloud.com").then(() => {
-    alert("Email copied!");
-    }).catch(err => {
-      console.error('Failed to copy: ', err);
-    });
   }
 
   // 4. Lightbox functionality
