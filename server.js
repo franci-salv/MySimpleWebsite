@@ -9,6 +9,7 @@ const path = require('path');
 dotenv.config();
 
 const app = express();
+app.set('trust proxy', 1);
 const PORT = process.env.PORT || 3000;
 
 // CORS configuration — Dynamic via Environment Variables
@@ -61,8 +62,11 @@ const contactLimiter = rateLimit({
 });
 
 // Email configuration
+// Updated Email configuration
 const transporter = nodemailer.createTransport({
-  service: 'gmail',
+  host: 'smtp.gmail.com',
+  port: 465,
+  secure: true, // explicitly forces SSL
   auth: {
     user: process.env.EMAIL_USER,
     pass: process.env.EMAIL_PASSWORD
