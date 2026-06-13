@@ -45,6 +45,26 @@ const corsOptions = {
   allowedHeaders: ['Content-Type']
 };
 
+const ALLOWED_ORIGINS = [
+  'https://francescosalvatore.com',
+  'https://www.francescosalvatore.com',
+  'https://franci-salv.github.io'
+];
+
+app.use((req, res, next) => {
+  const origin = req.headers.origin;
+  if (ALLOWED_ORIGINS.includes(origin)) {
+    res.setHeader('Access-Control-Allow-Origin', origin);
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+    res.setHeader('Access-Control-Allow-Credentials', 'true');
+  }
+  if (req.method === 'OPTIONS') {
+    return res.sendStatus(204);
+  }
+  next();
+});
+
 app.use(cors(corsOptions));
 app.use(express.json({ limit: '10kb' }));
 
