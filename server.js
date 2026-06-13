@@ -1,6 +1,5 @@
 const express = require('express');
 const nodemailer = require('nodemailer');
-const cors = require('cors');
 const dotenv = require('dotenv');
 const { body, validationResult } = require('express-validator');
 const rateLimit = require('express-rate-limit');
@@ -12,43 +11,17 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// CORS configuration
-const corsOptions = {
-  origin: function (origin, callback) {
-    // Allow development origins
-    const allowedOrigins = [
-      'http://localhost:3000',
-      'http://127.0.0.1:3000',
-      'http://localhost:8000',
-      'http://127.0.0.1:8000',
-      'http://localhost:8080',
-      'http://127.0.0.1:8080',
-      'http://localhost:8081',
-      'http://127.0.0.1:8081',
-      'https://franci-salv.github.io',
-      'https://francescosalvatore.com',
-      'https://www.francescosalvatore.com',
-      process.env.FRONTEND_URL
-    ].filter(Boolean);
-
-    // Allow any origin in development mode
-    if (process.env.NODE_ENV === 'development') {
-      callback(null, true);
-    } else if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
-  },
-  credentials: true,
-  methods: ['POST', 'GET', 'OPTIONS'],
-  allowedHeaders: ['Content-Type']
-};
-
+// CORS configuration — hardcoded origins, no env var dependency
 const ALLOWED_ORIGINS = [
   'https://francescosalvatore.com',
   'https://www.francescosalvatore.com',
-  'https://franci-salv.github.io'
+  'https://franci-salv.github.io',
+  'http://localhost:3000',
+  'http://127.0.0.1:3000',
+  'http://localhost:8000',
+  'http://127.0.0.1:8000',
+  'http://localhost:8080',
+  'http://127.0.0.1:8080'
 ];
 
 app.use((req, res, next) => {
@@ -65,7 +38,6 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use(cors(corsOptions));
 app.use(express.json({ limit: '10kb' }));
 
 // Rate limiting - 5 requests per 15 minutes per IP
@@ -255,24 +227,12 @@ const pollLimiter = rateLimit({
   legacyHeaders: false,
 });
 
-const pollCors = cors({
-  origin: [
-    'https://francescosalvatore.com',
-    'https://www.francescosalvatore.com',
-    'https://franci-salv.github.io',
-    'http://localhost:3000',
-    'http://127.0.0.1:3000'
-  ],
-  methods: ['GET', 'POST', 'OPTIONS'],
-  allowedHeaders: ['Content-Type']
-});
-
-app.get('/api/poll/results', pollCors, (req, res) => {
+app.get('/api/poll/results', (req, res) => {
   const data = loadPollData();
   res.json({ votes: data.votes });
 });
 
-app.post('/api/poll/vote', pollCors, pollLimiter, (req, res) => {
+app.post('/api/poll/vote', pollLimiter, (req, res) => {
   const clientIp = req.headers['x-forwarded-for']?.split(',')[0]?.trim() || req.ip;
   const fingerprint = req.body.fingerprint || '';
   const voterKey = `${clientIp}_${fingerprint}`;
