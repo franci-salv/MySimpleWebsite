@@ -26,6 +26,8 @@ const corsOptions = {
       'http://localhost:8081',
       'http://127.0.0.1:8081',
       'https://franci-salv.github.io',
+      'https://francescosalvatore.com',
+      'https://www.francescosalvatore.com',
       process.env.FRONTEND_URL
     ].filter(Boolean);
 
