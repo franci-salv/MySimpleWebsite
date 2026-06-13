@@ -4,6 +4,8 @@ const cors = require('cors');
 const dotenv = require('dotenv');
 const { body, validationResult } = require('express-validator');
 const rateLimit = require('express-rate-limit');
+const fs = require('fs');
+const path = require('path');
 
 dotenv.config();
 
@@ -200,6 +202,61 @@ function escapeHtml(text) {
   };
   return text.replace(/[&<>"']/g, m => map[m]);
 }
+
+// --- Poll System ---
+const POLL_FILE = path.join(__dirname, 'poll-data.json');
+
+function loadPollData() {
+  try {
+    if (fs.existsSync(POLL_FILE)) {
+      return JSON.parse(fs.readFileSync(POLL_FILE, 'utf8'));
+    }
+  } catch (e) {
+    console.error('Error loading poll data:', e);
+  }
+  return { votes: 0, voters: [] };
+}
+
+function savePollData(data) {
+  try {
+    fs.writeFileSync(POLL_FILE, JSON.stringify(data, null, 2));
+  } catch (e) {
+    console.error('Error saving poll data:', e);
+  }
+}
+
+const pollLimiter = rateLimit({
+  windowMs: 60 * 60 * 1000,
+  max: 3,
+  message: { message: 'Too many requests, please try again later' },
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+
+app.get('/api/poll/results', (req, res) => {
+  const data = loadPollData();
+  res.json({ votes: data.votes });
+});
+
+app.post('/api/poll/vote', pollLimiter, (req, res) => {
+  const clientIp = req.headers['x-forwarded-for']?.split(',')[0]?.trim() || req.ip;
+  const fingerprint = req.body.fingerprint || '';
+  const voterKey = `${clientIp}_${fingerprint}`;
+
+  const data = loadPollData();
+
+  if (data.voters.includes(clientIp) || (fingerprint && data.voters.includes(voterKey))) {
+    return res.status(409).json({ message: 'You have already voted', votes: data.votes });
+  }
+
+  data.votes++;
+  data.voters.push(clientIp);
+  if (fingerprint) data.voters.push(voterKey);
+  savePollData(data);
+
+  console.log(`[${new Date().toISOString()}] Poll vote from ${clientIp} — Total: ${data.votes}`);
+  res.json({ message: 'Vote recorded!', votes: data.votes });
+});
 
 // 404 handler
 app.use((req, res) => {
