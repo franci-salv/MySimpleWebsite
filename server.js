@@ -11,9 +11,13 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// CORS configuration — hardcoded origins, no env var dependency
+// CORS configuration — Dynamic via Environment Variables
+const FRONTEND_URL = process.env.FRONTEND_URL || 'https://francescosalvatore.com';
+
+// We combine your dynamic URL with your local dev environments
+// so you don't break your ability to test on localhost
 const ALLOWED_ORIGINS = [
-  'https://francescosalvatore.com',
+  FRONTEND_URL,
   'https://www.francescosalvatore.com',
   'https://franci-salv.github.io',
   'http://localhost:3000',
@@ -26,12 +30,19 @@ const ALLOWED_ORIGINS = [
 
 app.use((req, res, next) => {
   const origin = req.headers.origin;
+  
+  // If the request comes from an allowed origin, grant access
   if (ALLOWED_ORIGINS.includes(origin)) {
     res.setHeader('Access-Control-Allow-Origin', origin);
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
     res.setHeader('Access-Control-Allow-Credentials', 'true');
+  } else if (!origin) {
+    // Fallback for requests that don't send an origin header (like Postman or curl)
+    res.setHeader('Access-Control-Allow-Origin', FRONTEND_URL);
   }
+
+  // Pre-flight request handler
   if (req.method === 'OPTIONS') {
     return res.sendStatus(204);
   }
