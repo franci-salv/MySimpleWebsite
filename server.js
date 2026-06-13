@@ -235,12 +235,24 @@ const pollLimiter = rateLimit({
   legacyHeaders: false,
 });
 
-app.get('/api/poll/results', (req, res) => {
+const pollCors = cors({
+  origin: [
+    'https://francescosalvatore.com',
+    'https://www.francescosalvatore.com',
+    'https://franci-salv.github.io',
+    'http://localhost:3000',
+    'http://127.0.0.1:3000'
+  ],
+  methods: ['GET', 'POST', 'OPTIONS'],
+  allowedHeaders: ['Content-Type']
+});
+
+app.get('/api/poll/results', pollCors, (req, res) => {
   const data = loadPollData();
   res.json({ votes: data.votes });
 });
 
-app.post('/api/poll/vote', pollLimiter, (req, res) => {
+app.post('/api/poll/vote', pollCors, pollLimiter, (req, res) => {
   const clientIp = req.headers['x-forwarded-for']?.split(',')[0]?.trim() || req.ip;
   const fingerprint = req.body.fingerprint || '';
   const voterKey = `${clientIp}_${fingerprint}`;
