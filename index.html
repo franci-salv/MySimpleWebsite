@@ -1477,161 +1477,6 @@
   }
 }
 
-/* --- Workshop Poll Section --- */
-.poll-section {
-  max-width: 720px;
-  margin: var(--space-10) auto;
-  padding: 0 var(--space-6);
-}
-
-.poll-card {
-  background: linear-gradient(135deg, var(--surface-1) 0%, var(--surface-2) 100%);
-  border: 1px solid rgba(245, 158, 11, 0.3);
-  border-radius: var(--radius-lg);
-  padding: var(--space-8);
-  box-shadow: var(--shadow-lg);
-  position: relative;
-  overflow: hidden;
-  text-align: center;
-}
-
-.poll-card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 4px;
-  background: linear-gradient(90deg, var(--accent), var(--primary));
-}
-
-.poll-badge {
-  display: inline-block;
-  padding: 0.2rem 0.75rem;
-  border-radius: 999px;
-  background: rgba(245, 158, 11, 0.12);
-  border: 1px solid rgba(245, 158, 11, 0.4);
-  font-size: 0.75rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: var(--accent);
-  margin-bottom: var(--space-4);
-}
-
-.poll-card h2 {
-  font-size: 1.6rem;
-  margin: 0 0 var(--space-4) 0;
-  color: var(--fg);
-}
-
-.poll-card h2::after {
-  display: none;
-}
-
-.poll-description {
-  color: var(--muted);
-  font-size: 0.95rem;
-  line-height: 1.7;
-  margin-bottom: var(--space-6);
-}
-
-.poll-description strong {
-  color: var(--fg);
-}
-
-.poll-credentials {
-  display: flex;
-  justify-content: center;
-  gap: var(--space-3);
-  flex-wrap: wrap;
-  margin-bottom: var(--space-6);
-}
-
-.credential-tag {
-  padding: 0.3rem 0.7rem;
-  border-radius: var(--radius-md);
-  background: rgba(59, 130, 246, 0.1);
-  border: 1px solid rgba(59, 130, 246, 0.25);
-  font-size: 0.8rem;
-  font-weight: 600;
-  color: var(--primary);
-}
-
-.poll-vote-area {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: var(--space-4);
-}
-
-.poll-counter {
-  font-size: 2.5rem;
-  font-weight: 800;
-  color: var(--accent);
-  line-height: 1;
-  margin-bottom: var(--space-2);
-  transition: transform 0.3s ease;
-}
-
-.poll-counter.bump {
-  transform: scale(1.2);
-}
-
-.poll-counter-label {
-  font-size: 0.85rem;
-  color: var(--muted);
-  margin-bottom: var(--space-4);
-}
-
-.btn-vote {
-  background: linear-gradient(135deg, var(--accent) 0%, var(--accent-hover) 100%);
-  color: #000;
-  border: none;
-  padding: var(--space-4) var(--space-8);
-  font-size: 1rem;
-  font-weight: 700;
-  border-radius: var(--radius-md);
-  cursor: pointer;
-  box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
-  transition: all 0.3s ease;
-}
-
-.btn-vote:hover:not(:disabled) {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(245, 158, 11, 0.5);
-}
-
-.btn-vote:disabled {
-  opacity: 0.7;
-  cursor: not-allowed;
-  transform: none;
-  background: var(--surface-3);
-  color: var(--muted);
-  box-shadow: none;
-}
-
-.poll-status {
-  font-size: 0.85rem;
-  color: var(--muted);
-  min-height: 1.2rem;
-}
-
-.poll-status.voted {
-  color: #22c55e;
-}
-
-@media (max-width: 640px) {
-  .poll-card {
-    padding: var(--space-6);
-  }
-  .poll-card h2 {
-    font-size: 1.3rem;
-  }
-  .poll-counter {
-    font-size: 2rem;
-  }
-}
 
   </style>
 <script>
@@ -1668,43 +1513,18 @@
     <a href="#projects">Projects</a>
     <a href="#previously">Previously</a>
     <a href="#services">Services</a>
-    <a href="#products">Products</a>
-    <!--<a href="#travels">Travels</a>-->
     <a href="#photos">Photos</a>
     <a href="#travels">Travels</a>
     <a href="#contact">Contact</a>
   </nav>
 
-<!-- Workshop Interest Poll -->
-<div class="poll-section" id="workshop-poll">
-  <div class="poll-card">
-    <span class="poll-badge">Gauging Interest</span>
-    <h2>Should I run a free workshop on landing internships?</h2>
-    <p class="poll-description">
-      As a <strong>2nd year Mechanical Engineering bachelor's student</strong>, I've been offered internships at 
-      <strong>ASML</strong> and <strong>Signify</strong>. In high school I had special classes that helped me avoid the common pitfalls 
-      most students make. Current academic advisors have never gotten one themselves — I want to give out my roadmap 
-      <strong>for free</strong> to help as many people as possible. A lot of people just need guidance because they've never dealt with something like this before.
-    </p>
-    <div class="poll-credentials">
-      <span class="credential-tag">ASML Internship Offer</span>
-      <span class="credential-tag">Signify Internship Offer</span>
-      <span class="credential-tag">2nd Year BSc ME @ TU/e</span>
-    </div>
-    <div class="poll-vote-area">
-      <div class="poll-counter" id="poll-count">—</div>
-      <div class="poll-counter-label">people interested so far</div>
-      <button class="btn-vote" id="poll-vote-btn" onclick="submitVote()">Yes, I'd attend!</button>
-      <div class="poll-status" id="poll-status"></div>
-    </div>
-  </div>
-</div>
+
 
 <section id="about">
   <div class="about-content">
     <div class="about-text">
       <h2>About Me</h2>
-      <p>I'm a self taught full-stack developer and Mechanical Engineering student at TU/e in Eindhoven, with a strong focus on robotics, automation, and industrial systems. Over the past year I've built end-to-end projects ranging from PLC-based diagnostics tools in a factory setting, to web-integrated puzzle delivery systems for real users. Beyond engineering, I love to travel, hike and build things with smart people.</p>
+      <p>I'm a Mechanical Engineering student at TU/e in Eindhoven and I like to build things! I have a strong interest in robotics, automation, and control systems. I intend to use complex technology to make products that help people, right now I'm looking for co-founders that want to build. Beyond engineering, I love to travel, read, write, hike and build things with smart people. I'm working on becoming a blend of CTO, founding engineer and social entrepreneur. </p>
 
       <!-- 🔽 New Current Status button -->
       <button class="btn status-btn" id="status-trigger">
@@ -1782,6 +1602,11 @@
   <!-- Timeline Container -->
  <div class="timeline-container">
    <div class="scroll-hint" id="timeline-hint"><span>Scroll</span><span class="chev">→</span></div>
+
+   <div class="timeline-card">
+      <h3>17/08/2026 – Veldhoven 🇳🇱</h3>
+      <p>Officially joined ASML as a Mechatronics/Robotics engineer in D&E (development and engineering) in the actuator tooling team. Its going to be a great opportunity to be able to meet new people, learn more about myself and go in depth on building advanced technological machines AND to scout for new innovative ideas for my future ventures </p>
+    </div>
 
    <div class="timeline-card">
       <h3>17/04/2026 – Eindhoven 🇳🇱</h3>
@@ -2073,14 +1898,11 @@
   <div class="photo-gallery">
     <img src="photos/marathon .jpg" alt="Me running marathon">
     <img src="photos/humanoid.jpg" alt="Humanoid Tech United and me">
-    <img src="photos/me goofy suit.jpg" alt="Me in suit">
-    <img src="photos/me and volleyball.jpg" alt="Volleyball">
-    <img src="photos/me and tesoro.jpg" alt="Me and Girlfriend">
-    <img src="photos/boys.jpg" alt="Me and the boys">
     <img src="photos/skydive.jpg" alt="Me skydiving">
-    <img src="photos/SolderingHobbyist.jpeg" alt="Me soldering">
-
-
+    <img src="photos/Caving.jpg" alt="Me Caving">
+    <img src="photos/EmilyNMe.jpeg" alt="Me and Emily">
+    <img src="photos/ShenzhenVisit.jpeg">
+    <img src="photos/sunset.jpeg">
 
   </div>
 
@@ -2091,14 +1913,24 @@
   </div>
 
   <details class="printing-hall-details">
-  <summary class="printing-hall-summary">🏗️ View 3D Printing Hall</summary>
+  <summary class="printing-hall-summary">🏗️ View mini projects Hall</summary>
   <div class="printing-hall-content">
-    <p style="text-align:center; color:#9ca3af; margin-bottom: 2rem;">3D prints that made my life better and prototypes from my Bambu A1 (more coming soon).</p>
+    <p style="text-align:center; color:#9ca3af; margin-bottom: 2rem;">other projects that made my life better and prototypes from my Bambu A1.</p>
     
     <div class="photo-gallery">
       <img src="photos/3DPrintHall/GorillaPhoneHolder.jpeg" alt="Phone holder gorilla">
       <img src="photos/3DPrintHall/SoapBox.jpeg" alt="Soap box">
-      <img src="photos/3DPrintHall/CableSorting.jpeg" alt="Cable sorting">
+      <img src="Cycling tool.png">
+      <img src="photos/BottleDesign.jpeg">
+      <img src="photos/embeddedSystem.jpeg">
+      <img src="photos/futureofShoes.jpeg">
+      <img src="photos/LampNewCAD.jpeg">
+      <img src="photos/LampOldCAD.jpeg">
+      <img src="photos/SolderingHobbyist.jpeg">
+      <img src="epicRobot.png">
+      <img src="Puzzle.PNG">
+      <img src="House.png">
+
 
       </div>
   </div>
@@ -2279,13 +2111,26 @@ const statusHistory = [
     period: "Current Status",
     subtitle: "Quick snapshot of what I’m focused on right now.",
     items: [
-      { tag: "Robotics", body: "Developing a new object hypothesis expansion for sequential clustering algorithm in tech united" },
-      { tag: "Building", body: "Doing a soldering puzzle to learn to solder" },
-      { tag: "Travel", body: "Will be going to China in July this summer" },
-      { tag: "University", body: "Heat & Flow, Autonomous robotics and Digital twin (Unity)" },
-      { tag: "Startup Accelerator", body: "Attending workshops to learn sales, pitching and validate our vision"},
+      { tag: "Robotics", body: "Finding robotic application within ASML manufacturing" },
+      { tag: "University", body: "Computational Mechanics and Bachelor end project" },
+      { tag: "Training", body: "Ripped protocol" },
+      { tag: "Reading", body: "10 to 25: The Science of Motivating Young People" },
+      { tag: "Hit song", body: "Game Started , Sound of Legend" },
+      { tag: "Internship", body: "Robotics Engineer @ ASML" },
+    ]
+  },
+  {
+    period: "Mid 2026",
+    subtitle: "What I was working on",
+    items: [
+      { tag: "Robotics", body: "Developing a new object hypothesis expansion in tech united" },
+      { tag: "Building", body: "Doing a soldering puzzle" },
+      { tag: "Travel", body: "Went to China & Taipei in July" },
+      { tag: "University", body: "Heat & Flow, Autonomous robotics and Digital twin damage estimation (Unity)" },
+      { tag: "Startup Accelerator", body: "Pitching my startup Hyphora"},
       { tag: "Reading", body: "The forgotten highlander by Alistair Urquhart" },
-      { tag: "Work prospects", body: "I've been offered an internship more info soon" },
+      { tag: "Hit song", body: "New Song, Maneskin" },
+      { tag: "Internship", body: "Received Internship offer!!" },
     ]
   },
   {
@@ -2514,7 +2359,9 @@ if (statusTrigger && statusModal) {
       '276': 'Germany  — Skydiving, August 2025',
       '620': 'Portugal  — Mountain climbing, March 2025',
       '826': 'UK  — visited Canterbury School trip, 2018',
-      '756': 'Switzerland  — hackathon @ EPFL Robohack, 2026 '
+      '756': 'Switzerland  — hackathon @ EPFL Robohack, 2026 ',
+      '156': 'China  — Tech visit @ Shenzhen, 2026 ',
+      '158': 'Taiwan  — Surfing @ Yilan, 2026 '
     };
 
     const svg = d3.select('#world-map')
@@ -2560,99 +2407,6 @@ if (statusTrigger && statusModal) {
           '<p style="text-align:center;color:var(--muted);padding:2rem;">Map failed to load — check your internet connection.</p>';
       });
   });
-</script>
-
-<script>
-// --- Workshop Poll Logic ---
-const POLL_API = 'https://mysimplewebsite-production.up.railway.app/api/poll';
-const POLL_STORAGE_KEY = 'workshop_poll_voted';
-
-function getFingerprint() {
-  const canvas = document.createElement('canvas');
-  const ctx = canvas.getContext('2d');
-  ctx.textBaseline = 'top';
-  ctx.font = '14px Arial';
-  ctx.fillText('fp', 2, 2);
-  const nav = navigator.userAgent + navigator.language + screen.width + screen.height;
-  return btoa(nav + canvas.toDataURL()).slice(0, 32);
-}
-
-async function loadPollResults() {
-  try {
-    const res = await fetch(`${POLL_API}/results`);
-    if (res.ok) {
-      const data = await res.json();
-      document.getElementById('poll-count').textContent = data.votes;
-    }
-  } catch (e) {
-    document.getElementById('poll-count').textContent = '—';
-  }
-}
-
-async function submitVote() {
-  const btn = document.getElementById('poll-vote-btn');
-  const status = document.getElementById('poll-status');
-  const counter = document.getElementById('poll-count');
-
-  if (localStorage.getItem(POLL_STORAGE_KEY)) {
-    status.textContent = "You've already voted — thanks for the support!";
-    status.className = 'poll-status voted';
-    btn.disabled = true;
-    btn.textContent = 'Already voted';
-    return;
-  }
-
-  btn.disabled = true;
-  btn.textContent = 'Submitting...';
-
-  try {
-    const res = await fetch(`${POLL_API}/vote`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ fingerprint: getFingerprint() })
-    });
-
-    const data = await res.json();
-
-    if (res.ok) {
-      localStorage.setItem(POLL_STORAGE_KEY, 'true');
-      counter.textContent = data.votes;
-      counter.classList.add('bump');
-      setTimeout(() => counter.classList.remove('bump'), 300);
-      status.textContent = "Vote recorded — thanks for the support!";
-      status.className = 'poll-status voted';
-      btn.textContent = 'Voted!';
-    } else if (res.status === 409) {
-      localStorage.setItem(POLL_STORAGE_KEY, 'true');
-      status.textContent = "You've already voted — thanks for the support!";
-      status.className = 'poll-status voted';
-      btn.textContent = 'Already voted';
-      if (data.votes) counter.textContent = data.votes;
-    } else {
-      status.textContent = data.message || 'Something went wrong, try again later.';
-      btn.disabled = false;
-      btn.textContent = "Yes, I'd attend!";
-    }
-  } catch (e) {
-    status.textContent = 'Network error — please try again later.';
-    btn.disabled = false;
-    btn.textContent = "Yes, I'd attend!";
-  }
-}
-
-// On page load: check if already voted, load current count
-document.addEventListener('DOMContentLoaded', () => {
-  loadPollResults();
-
-  if (localStorage.getItem(POLL_STORAGE_KEY)) {
-    const btn = document.getElementById('poll-vote-btn');
-    const status = document.getElementById('poll-status');
-    btn.disabled = true;
-    btn.textContent = 'Already voted';
-    status.textContent = "You've already voted — thanks for the support!";
-    status.className = 'poll-status voted';
-  }
-});
 </script>
 
 </body>
