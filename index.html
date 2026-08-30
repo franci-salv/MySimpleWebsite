@@ -1477,6 +1477,39 @@
   }
 }
 
+/* Float-based wrapping CSS */
+.product-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+}
+
+.product-image-wrapper {
+  float: left;
+  width: 140px;          /* Adjust preview width as desired */
+  margin-right: 1.25rem;
+  margin-bottom: 0.75rem;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.product-image {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.product-body::after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+.product-description {
+  margin: 0;
+  line-height: 1.5;
+}
 
   </style>
 <script>
@@ -1513,6 +1546,7 @@
     <a href="#projects">Projects</a>
     <a href="#previously">Previously</a>
     <a href="#services">Services</a>
+    <a href="#products">Products</a>
     <a href="#photos">Photos</a>
     <a href="#travels">Travels</a>
     <a href="#contact">Contact</a>
@@ -1681,7 +1715,7 @@
 </section>
 
 <section id="services" style="margin-top: 60px;">
-  <h2>Products & Services</h2>
+  <h2>Services</h2>
   <p style="text-align:center; color:#778da9;">
     Here’s how I can help your business, projects or you right now. Click a card to learn more.
   </p>
@@ -1802,25 +1836,34 @@
 
     <!-- Card 2: Coming Soon -->
     <div class="product-card">
-      <div class="product-icon-wrapper">
-        <div class="product-icon">?</div>
-      </div>
-
-      <div class="product-header">
-        <h3>Coming Soon</h3>
-      </div>
-      
-      <p class="product-description">
-        We are cooking up something new. Stay tuned for our next product release.
-      </p>
-
-      <div class="product-cta">
-        <button class="btn btn-secondary" disabled>
-          Stay Tuned
-        </button>
-      </div>
-    </div>
+  <div class="product-header">
+    <h3>Custom Ceramics Patterning Tools</h3>
+    <span class="status-badge beta">PILOT</span>
   </div>
+
+  <div class="product-body">
+    <div class="product-image-wrapper">
+      <img 
+        src="photos/Ceramics.webp" 
+        alt="Custom Ceramics Patterning Tools" 
+        class="product-image"
+      />
+    </div>
+
+    <p class="product-description">
+      Manufactured in EU, custom patterning ribs, stamps, and rollers designed specifically for potters. Send me the 3D file of the tool you want. Join our pilot program to test custom designs.
+    </p>
+  </div>
+
+  <div class="product-cta">
+    <a href="https://t.me/FrancescoSalva" target="_blank" class="btn btn-primary">
+      Request Custom Tool
+    </a>
+    <p class="product-hint">Message me on Telegram @FrancescoSalva to get started</p>
+  </div>
+</div>
+  </div>
+  
 </section>
 
   <!-- Work in progress 
