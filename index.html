@@ -551,6 +551,109 @@
   align-items: center;
 }
 
+.profile-trigger {
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  cursor: pointer;
+}
+.profile-trigger:focus-visible { outline: 3px solid var(--primary); outline-offset: 6px; }
+.profile-trigger .profile-img { display: block; }
+.profile-trigger:hover .profile-img { transform: scale(1.05); }
+
+.stats-dialog {
+  width: min(calc(100% - 2rem), 460px);
+  max-height: 85dvh;
+  padding: clamp(1rem, 5vw, 2rem);
+  border: 1px solid var(--surface-3);
+  border-radius: var(--radius-lg);
+  color: var(--fg);
+  background:
+    linear-gradient(90deg, var(--primary), var(--accent)) top / 100% 3px no-repeat,
+    var(--surface-1);
+  box-shadow: 0 24px 72px rgba(0, 0, 0, .45);
+}
+
+.stats-dialog::backdrop {
+  background: rgba(10, 15, 26, .75);
+  backdrop-filter: blur(5px);
+}
+
+.stats-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  margin-bottom: var(--space-5);
+}
+
+.stats-header h2 {
+  margin: 0;
+  font-size: clamp(1.25rem, 5vw, 1.75rem);
+  letter-spacing: -.025em;
+}
+
+.stats-close {
+  flex: 0 0 36px;
+  height: 36px;
+  padding: 0;
+  border: 1px solid var(--surface-3);
+  border-radius: 50%;
+  background: var(--surface-2);
+  color: var(--fg);
+  font-size: 1.4rem;
+  cursor: pointer;
+}
+
+.stats-close:hover { background: var(--surface-3); }
+.stats-close:focus-visible, .stats-map-link:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 3px;
+}
+
+.stats-record {
+  margin: 0;
+  border-top: 1px solid var(--surface-3);
+  font-family: ui-monospace, "Courier New", monospace;
+  font-size: clamp(.8125rem, 2.9vw, .9375rem);
+  line-height: 1.5;
+}
+
+.stat-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: baseline;
+  gap: var(--space-3);
+  padding-block: var(--space-3);
+  border-bottom: 1px solid var(--surface-3);
+}
+
+.stat-label { color: var(--muted); }
+
+.stat-value {
+  margin: 0;
+  color: var(--fg);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+  white-space: nowrap;
+}
+
+.stat-total {
+  color: var(--muted);
+  font-size: .875em;
+  font-weight: 400;
+}
+
+.stats-map-link {
+  display: inline-block;
+  margin-top: var(--space-4);
+  color: var(--accent);
+  font-size: .875rem;
+  text-underline-offset: .2em;
+}
+
 .profile-img {
   width: 280px;
   height: 280px;
@@ -1663,7 +1766,9 @@
       <!-- 🔼 New Current Status button -->
     </div>
     <div class="about-image">
-      <img src="me.jpg" alt="Francesco Salvatore" class="profile-img">
+      <button class="profile-trigger" id="stats-trigger" type="button" aria-label="View Francesco's personal statistics" aria-haspopup="dialog">
+        <img src="me.jpg" alt="Francesco Salvatore" class="profile-img">
+      </button>
     </div>
   </div>
 </section>
@@ -2083,7 +2188,7 @@
 
 </section>
 
-<section id="travels" style="margin-top: 60px;">
+<section id="travel-map" style="margin-top: 60px;">
   <h2>World Traveller</h2>
   <p style="text-align:center; color:#9ca3af;">Countries I've travelled to</p>
   <div class="map-container" style="position:relative;">
@@ -2177,6 +2282,36 @@
 </section>
 
 
+<dialog id="stats-dialog" class="stats-dialog" aria-labelledby="stats-title">
+  <div class="stats-header">
+    <h2 id="stats-title">Francesco in numbers</h2>
+    <button class="stats-close" type="button" aria-label="Close statistics" autofocus>&times;</button>
+  </div>
+  <dl class="stats-record">
+    <div class="stat-row">
+      <dt class="stat-label">Age:</dt>
+      <dd class="stat-value" id="stats-age"></dd>
+    </div>
+    <div class="stat-row">
+      <dt class="stat-label">Countries visited:</dt>
+      <dd class="stat-value"><span id="stats-countries"></span><span class="stat-total"> / 195</span></dd>
+    </div>
+    <div class="stat-row">
+      <dt class="stat-label">Peak Chess Puzzle Elo:</dt>
+      <dd class="stat-value" id="stats-chess-elo"></dd>
+    </div>
+    <div class="stat-row">
+      <dt class="stat-label">Social Media Followers:</dt>
+      <dd class="stat-value" id="stats-followers"></dd>
+    </div>
+    <div class="stat-row">
+      <dt class="stat-label">Visitors Last 30 Days:</dt>
+      <dd class="stat-value" id="stats-visitors"></dd>
+    </div>
+  </dl>
+  <a class="stats-map-link" href="#travel-map">See my travel map <span aria-hidden="true">→</span></a>
+</dialog>
+
 <!-- 🔼 Current Status Modal -->
  <div id="status-modal" class="status-modal">
   <div class="status-modal-content">
@@ -2200,6 +2335,80 @@
 
 
   <script>
+
+  // Numeric ISO 3166-1 codes
+  const travelLog = {
+    '124': 'Canada — Family trip, August 2024',
+    '380': 'Italy — Turin, Napoli, Capri, July 2024',
+    '642': 'Romania — Iasi with my girlfriend Mar 2026',
+    '840': 'USA — New York with my parents Nov 2023',
+    '250': 'France — Paris for new years Jan 2025',
+    '336': 'the Vatican — visiting unc ',
+    '203': 'Czech Republic — Interrailing 2025',
+    '348': 'Hungary — Interrailing 2025',
+    '705': 'Slovenia — Interrailing 2025',
+    '70': 'Bosnia and Herzegovina — Interrailing 2025',
+    '191': 'Croatia — Interrailing 2025',
+    '352': 'Iceland — Family trip',
+    '578': 'Norway — Family trip',
+    '40': 'Austria — Valentines trip Feb 2026',
+    '724': 'Spain — School Trip in Madrid 2023',
+    '372': 'Ireland  — Lived here 2020–2024',
+    '56':  'Belgium  — Born & raised here 2006-2020',
+    '528': 'Netherlands  — TU/e, marathons & more',
+    '276': 'Germany  — Skydiving, August 2025',
+    '620': 'Portugal  — Mountain climbing, March 2025',
+    '826': 'UK  — visited Canterbury School trip, 2018',
+    '756': 'Switzerland  — hackathon @ EPFL Robohack, 2026 ',
+    '156': 'China  — Tech visit @ Shenzhen, 2026 ',
+    '158': 'Taiwan  — Surfing @ Yilan, 2026 '
+  };
+
+  const statsDialog = document.getElementById('stats-dialog');
+
+  // Manually updated statistics for Francesco in numbers.
+  const peakChessPuzzleElo = 2136; // All-time personal best.
+  const socialFollowers = {
+    instagram: 458,
+    youtube: 29,
+    twitter: 23,
+    substack: 3,
+    github: 0,
+    linkedin: 1111, // Use 0 if the LinkedIn count is unknown.
+  };
+  const visitorsLast30Days = 30; // Update with the latest count or estimate. Use 0 if unknown.
+
+  const followerTotal = Object.values(socialFollowers).reduce((total, count) => total + count, 0);
+  document.getElementById('stats-chess-elo').textContent = peakChessPuzzleElo;
+  document.getElementById('stats-followers').textContent =
+    socialFollowers.linkedin ? followerTotal.toLocaleString('en-US') : '—';
+  document.getElementById('stats-visitors').textContent =
+    visitorsLast30Days ? visitorsLast30Days.toLocaleString('en-US') : '—';
+
+  // Use the 193 UN members plus two observer states for the travel tally.
+  // Taiwan stays on the travel map but falls outside this count.
+  const countriesVisited = Object.keys(travelLog).filter(code => code !== '158').length;
+  document.getElementById('stats-countries').textContent = countriesVisited;
+
+  document.getElementById('stats-trigger').addEventListener('click', () => {
+    const today = new Date();
+    const birthdayThisYear = new Date(today.getFullYear(), 4, 31);
+    const age = today.getFullYear() - 2006 - Number(today < birthdayThisYear);
+    document.getElementById('stats-age').textContent = age;
+    statsDialog.showModal();
+  });
+
+  statsDialog.querySelector('.stats-close').addEventListener('click', () => statsDialog.close());
+  statsDialog.querySelector('.stats-map-link').addEventListener('click', () => statsDialog.close());
+  statsDialog.addEventListener('click', (event) => {
+    if (event.target === statsDialog) {
+      const bounds = statsDialog.getBoundingClientRect();
+      if (event.clientX < bounds.left || event.clientX > bounds.right ||
+          event.clientY < bounds.top || event.clientY > bounds.bottom) {
+        statsDialog.close();
+      }
+    }
+  });
 
   /* Contact Form Handler */
   // Hardcoded for development - works from any IP/hostname
@@ -2480,7 +2689,7 @@ if (statusTrigger && statusModal) {
   const gallery = document.querySelectorAll('.photo-gallery img');
   const lightbox = document.getElementById('lightbox');
   const lightboxImg = document.getElementById('lightbox-img');
-  const closeBtn = document.querySelector('.lightbox-close'); // Changed to be more specific
+  const closeBtn = lightbox?.querySelector('.close');
 
   if (lightbox && lightboxImg) {
     gallery.forEach(img => {
@@ -2514,33 +2723,14 @@ if (statusTrigger && statusModal) {
     const tooltip = document.getElementById('map-tooltip');
     const container = document.querySelector('.map-container');
 
-    // Numeric ISO 3166-1 codes
-    const travelLog = {
-      '124': 'Canada — Family trip, August 2024',
-      '380': 'Italy — Turin, Napoli, Capri, July 2024',
-      '642': 'Romania — Iasi with my girlfriend Mar 2026',
-      '840': 'USA — New York with my parents Nov 2023',
-      '250': 'France — Paris for new years Jan 2025',
-      '336': 'the Vatican — visiting unc ',
-      '203': 'Czech Republic — Interrailing 2025',
-      '348': 'Hungary — Interrailing 2025',
-      '705': 'Slovenia — Interrailing 2025',
-      '70': 'Bosnia and Herzegovina — Interrailing 2025',
-      '191': 'Croatia — Interrailing 2025',
-      '352': 'Iceland — Family trip',
-      '578': 'Norway — Family trip',
-      '40': 'Austria — Valentines trip Feb 2026',
-      '724': 'Spain — School Trip in Madrid 2023',
-      '372': 'Ireland  — Lived here 2020–2024',
-      '56':  'Belgium  — Born & raised here 2006-2020',
-      '528': 'Netherlands  — TU/e, marathons & more',
-      '276': 'Germany  — Skydiving, August 2025',
-      '620': 'Portugal  — Mountain climbing, March 2025',
-      '826': 'UK  — visited Canterbury School trip, 2018',
-      '756': 'Switzerland  — hackathon @ EPFL Robohack, 2026 ',
-      '156': 'China  — Tech visit @ Shenzhen, 2026 ',
-      '158': 'Taiwan  — Surfing @ Yilan, 2026 '
+    const showMapError = () => {
+      container.innerHTML =
+        '<p style="text-align:center;color:var(--muted);padding:2rem;">Map failed to load — check your internet connection.</p>';
     };
+    if (!window.d3 || !window.topojson) {
+      showMapError();
+      return;
+    }
 
     const svg = d3.select('#world-map')
       .attr('viewBox', `0 0 ${width} ${height}`);
@@ -2580,10 +2770,7 @@ if (statusTrigger && statusModal) {
             tooltip.style.display = 'none';
           });
       })
-      .catch(() => {
-        document.querySelector('.map-container').innerHTML = 
-          '<p style="text-align:center;color:var(--muted);padding:2rem;">Map failed to load — check your internet connection.</p>';
-      });
+      .catch(showMapError);
   });
 </script>
 
